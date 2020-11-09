@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher, tick } from "svelte";
+  import Button from "./components/button.svelte";
 
   export let name;
   export let amount;
@@ -42,7 +43,10 @@
   .container {
     display: flex;
     align-items: center;
-    /* flex-direction: column; */
+    background: #f8f8f8;
+    padding: 0.4rem 1.4rem;
+    margin: 1.1rem 0;
+    border-radius: 0.4rem;
   }
   .field {
     display: flex;
@@ -50,8 +54,9 @@
   }
 
   .accountName {
-    min-width: 140px;
-    margin-right: 4px;
+    min-width: 210px;
+    margin: 0 0.5rem 0 0.5rem;
+
   }
 
   .input {
@@ -70,44 +75,15 @@
     background-color: white;
 
     outline: none;
-    border-radius: 6px;
+    border-radius: 4px;
     border: 1px solid #eee;
     color: black;
-  }
-
-  .button {
-    display: inline-block;
-    width: 100%;
-    max-width: 124px;
-    padding: 12px 12px;
-
-    outline: none;
-    box-shadow: none;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-
-    font-size: 16px;
-    border-radius: 8px;
-    line-height: 1.125;
-
-    color: #fff;
-    background-color: rgb(37, 138, 255);
-    border: 1px solid rgb(37, 138, 255);
-
-    transition: border-color 0.1s ease 0s, background-color 0.1s ease 0s,
-      color 0.1s ease 0s;
-  }
-
-  .button:hover {
-    background-color: lighten(rgb(37, 138, 255), 8%);
-    border-color: lighten(rgb(37, 138, 255), 8%);
   }
 
   .select {
     margin-left: 8px;
     padding: 0 12px;
-    border-radius: 8px;
+    border-radius: 4px;
     border: 1px solid #eee;
   }
 </style>
@@ -136,11 +112,11 @@
       placeholder="cумма"
       name={`${id}Amount`}
       bind:value={amountValue} />
-    <select class='select' name={`${id}Currency`} bind:value={currencyValue}>
+    <select class="select" name={`${id}Currency`} bind:value={currencyValue}>
       <option value="USD">Доллар</option>
       <option value="EUR">Евро</option>
       <option value="RUB">Рубли</option>
     </select>
   </div>
-  <button class="button" on:click={handleDelete}>Удалить</button>
+  <Button on:click={handleDelete}>Удалить</Button>
 </div>

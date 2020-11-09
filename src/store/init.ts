@@ -17,7 +17,7 @@ import {
   saveTotal,
 } from ".";
 import { getAllCurrencyApi } from "./api";
-import type { ITotalStorage } from "./types";
+import type { ISavings, ITotalStorage } from "./types";
 import { parseDate } from "../helpers";
 
 // getAllCurrency
@@ -87,6 +87,16 @@ savingsHistory.on(initializeSavings, (state) => {
   }
 });
 
+// saveTotal
+
+saveTotal.use((savingHistory) => {
+  return saveTotalToLS(savingHistory);
+});
+
+savingsHistory.on(saveTotal.doneData, (_, newHistory) => newHistory);
+
+//
+
 finance.on(createAccount, (state) => {
   const currentId = Date.now().valueOf();
   return {
@@ -101,30 +111,36 @@ finance.on(createAccount, (state) => {
 
 finance.on(deleteAccount, (state, id) => {
   const currentState = { ...state };
+
   delete currentState[id];
+  localStorage.setItem("data", JSON.stringify(currentState));
+
   return currentState;
-});
-
-saveTotal.use((total) => {
-  const dataFromLS = localStorage.getItem("total");
-  const prev: ITotalStorage[] = dataFromLS ? JSON.parse(dataFromLS) : [];
-  const currentDate = parseDate();
-
-  if (total.EUR === 0 && total.RUB === 0 && total.USD === 0) {
-    return;
-  }
-
-  if (prev.map((item) => item.date).includes(currentDate)) {
-    return;
-  }
-
-  localStorage.setItem(
-    "total",
-    JSON.stringify([...prev, { ...total, date: currentDate }])
-  );
 });
 
 forward({
   from: totalSaving,
   to: saveTotal,
 });
+
+function saveTotalToLS(total: ISavings): ITotalStorage[] {
+  const dataFromLS = localStorage.getItem("total");
+  const prevHistory: ITotalStorage[] = dataFromLS ? JSON.parse(dataFromLS) : [];
+  const currentDate = parseDate();
+
+  if (total.EUR === 0 && total.RUB === 0 && total.USD === 0) {
+    return prevHistory;
+  }
+
+  const newHistoryItem: ITotalStorage = { ...total, date: currentDate };
+
+  let newHistory = [...prevHistory, newHistoryItem];
+   
+  if (prevHistory.map((item) => item.date).includes(currentDate)) {
+    newHistory = [...prevHistory.slice(0, -1), newHistoryItem];
+  }
+
+  localStorage.setItem("total", JSON.stringify(newHistory));
+  
+  return newHistory;
+}

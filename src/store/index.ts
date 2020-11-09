@@ -61,4 +61,4 @@ export const deleteAccount = createEvent<number>();
 export const initializeSavings = createEvent<void>();
 
 export const getAllCurrency = createEffect<void, IAllCurrency, string>();
-export const saveTotal = createEffect<ISavings, void, void>();
+export const saveTotal = createEffect<ISavings, ITotalStorage[], void>();

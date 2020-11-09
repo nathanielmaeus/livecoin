@@ -15,8 +15,13 @@
     totalSaving,
     savingsHistory,
   } from "./store";
+
   import Input from "./Input.svelte";
+  import Button from "./components/button.svelte";
+  import SavingHistory from "./components/savingHistory/savingHistory.svelte";
+  import Money from "./components/money.svelte";
   import Diagram from "./components/diagram.svelte";
+
   import { data } from "./data";
 
   onMount(() => {
@@ -47,7 +52,7 @@
 
 <style lang="css">
   .app {
-    max-width: 800px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 2rem;
   }
@@ -70,9 +75,9 @@
   {#if $status === STATUS.loaded}
     <div class="sum">
       Доллар:
-      {round($rates['USD'])}
+      <Money amount={$rates.USD} currency="USD" />
       Евро:
-      {round($rates['EUR'])}
+      <Money amount={$rates.EUR} currency="EUR" />
     </div>
   {/if}
   <div class="stats">
@@ -86,27 +91,24 @@
           on:message={handleChange}
           on:delete={handleDelete} />
       {/each}
-      <button on:click={add}>Добавить</button>
+      <Button on:click={add}>Добавить</Button>
     </form>
     <div>
-      {#each $savingsHistory as item}
-        <div class="sum">{item.date}: {round(item.RUB)} RUB</div>
-      {/each}
+      <SavingHistory />
     </div>
   </div>
 
   <div class="results">
+    Общая сумма:
     <div class="sum">
-      Общая сумма в рублях:
-      {round($totalSaving['RUB'])}
-      RUB
+      <Money amount={$totalSaving.RUB} currency="RUB" />
     </div>
     <div class="sum">
-      Общая сумма в долларах:
-      {round($totalSaving['USD'])}
-      USD
+      <Money amount={$totalSaving.USD} currency="USD" />
     </div>
-    <div class="sum">Общая сумма в евро: {round($totalSaving['EUR'])} EUR</div>
+    <div class="sum">
+      <Money amount={$totalSaving.EUR} currency="EUR" />
+    </div>
   </div>
 
   <!-- <Diagram xData={data.columns[0]} yData={data.columns[1]} colors={data.colors} title="Chart 3" /> -->
