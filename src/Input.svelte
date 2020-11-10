@@ -43,10 +43,10 @@
   .container {
     display: flex;
     align-items: center;
-    background: #f8f8f8;
-    padding: 0.4rem 1.4rem;
-    margin: 1.1rem 0;
-    border-radius: 0.4rem;
+    padding: 0.25rem 1.4rem;
+    margin-bottom: 1rem;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 0.25rem;
   }
   .field {
     display: flex;

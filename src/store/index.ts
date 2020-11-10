@@ -27,6 +27,7 @@ const INITIAL: IFinance = {
 export const status = createStore<STATUS>(STATUS.initial);
 export const error = createStore<string | null>(null);
 export const rates = createStore<IRates>({ USD: 0, EUR: 0 });
+export const historyRates = createStore<IRates[]>([]);
 export const date = createStore<string | null>(null);
 export const savingsHistory = createStore<ITotalStorage[]>([]);
 export const finance = createStore<IFinance>(INITIAL);

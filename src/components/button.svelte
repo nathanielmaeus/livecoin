@@ -15,16 +15,16 @@
     line-height: 1.125;
 
     color: #fff;
-    background-color: #258aff;
-    border: 1px solid#258aff;
+    background-color: #424c57;
+    border: 1px solid#424c57;
 
     transition: border-color 0.1s ease 0s, background-color 0.1s ease 0s,
       color 0.1s ease 0s;
   }
 
   .button:hover {
-    background-color: #69a7ee;
-    border-color: #69a7ee;
+    background-color: #53606e;
+    border-color: #53606e;
   }
 </style>
 

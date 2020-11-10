@@ -4,35 +4,40 @@
   export let item;
   export let prevItem;
 
-  console.log(prevItem);
   const prevAmount = prevItem ? prevItem.RUB : 0;
-  const diffAmount = prevItem ? round(item.RUB - prevAmount) : null;
-  console.log(diffAmount);
+  $: diffAmount = prevItem ? round(item.RUB - prevAmount) : 0;
 </script>
 
 <style>
   .sum {
-    font-size: 1.2rem;
-    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #615a5a;
+  }
+  .sum:first-child {
+    border-top: 1px solid #615a5a;
   }
   .diff {
-    color: #000;
+    margin-left: 1rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
   }
   .green {
-    color: rgb(10, 119, 52);
+    background-color: rgb(10, 119, 52);
   }
   .red {
-    color: rgb(209, 13, 23);
+    background-color: rgb(209, 13, 23);
   }
 </style>
 
 <div class="sum">
-  {item.date}:
-  <Money amount={item.RUB} currency="RUB" />
-  
-  {#if diffAmount !== null}
-    <span class="diff" class:green={diffAmount >= 0} class:red={diffAmount < 0}>
-      {'->'} <Money amount={diffAmount} currency="RUB" />
-    </span>
-  {/if}
+  <span>
+    {item.date}:
+    <Money amount={item.RUB} currency="RUB" />
+  </span>
+  <span class="diff" class:green={diffAmount >= 0} class:red={diffAmount < 0}>
+    <Money amount={diffAmount} currency="RUB" withK={true} />
+  </span>
 </div>

@@ -3,6 +3,7 @@
 
   export let amount = "Mistake";
   export let currency;
+  export let withK = false;
 
   const SYMBOL = {
     EUR: "€",
@@ -13,9 +14,8 @@
 
 <style>
   .sum {
-    font-size: 1.2rem;
     margin: 0.5rem 0;
   }
 </style>
 
-<span class="sum">{round(amount)} {SYMBOL}</span>
+<span class="sum">{round(amount, withK)} {SYMBOL}</span>

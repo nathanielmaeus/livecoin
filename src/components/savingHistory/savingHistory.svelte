@@ -3,7 +3,15 @@
   import Item from "./savingHistoryItem.svelte";
 </script>
 
+<style>
+  .container {
+    max-height: 468px;
+    overflow-y: auto;
+  }
+</style>
 
-{#each $savingsHistory as item, index}
-  <Item {item} prevItem={$savingsHistory[index - 1]} />
-{/each}
+<div class="container">
+  {#each $savingsHistory as item, index}
+    <Item {item} prevItem={$savingsHistory[index - 1]} />
+  {/each}
+</div>

@@ -4,6 +4,7 @@ import {
   status,
   error,
   rates,
+  historyRates,
   date,
   finance,
   totalSaving,
@@ -17,7 +18,7 @@ import {
   saveTotal,
 } from ".";
 import { getAllCurrencyApi } from "./api";
-import type { ISavings, ITotalStorage } from "./types";
+import type { IRates, ISavings, ITotalStorage } from "./types";
 import { parseDate } from "../helpers";
 
 // getAllCurrency
@@ -34,6 +35,28 @@ rates.on(getAllCurrency.doneData, (_, { ratesUSD, ratesEUR }) => ({
   EUR: ratesEUR["RUB"],
   RUB: 1,
 }));
+
+historyRates.on(getAllCurrency.doneData, (_, { ratesUSD, ratesEUR }) => {
+  const oldRatesItemsLS = localStorage.getItem("rates");
+  const oldRatesItems = oldRatesItemsLS ? JSON.parse(oldRatesItemsLS) : [];
+
+  const ratesItem = {
+    USD: ratesUSD["RUB"],
+    EUR: ratesEUR["RUB"],
+    RUB: 1,
+  };
+
+
+  if(oldRatesItems.length > 0 && ratesUSD.RUB === oldRatesItems[oldRatesItems.length-1].USD) {
+    return oldRatesItems;
+  }
+
+  const allHistory: IRates[] = [...oldRatesItems, ratesItem];
+
+  localStorage.setItem("rates", JSON.stringify(allHistory));
+
+  return allHistory;
+});
 
 error.on(getAllCurrency.failData, (_, error) => error);
 
@@ -135,12 +158,12 @@ function saveTotalToLS(total: ISavings): ITotalStorage[] {
   const newHistoryItem: ITotalStorage = { ...total, date: currentDate };
 
   let newHistory = [...prevHistory, newHistoryItem];
-   
+
   if (prevHistory.map((item) => item.date).includes(currentDate)) {
     newHistory = [...prevHistory.slice(0, -1), newHistoryItem];
   }
 
   localStorage.setItem("total", JSON.stringify(newHistory));
-  
+
   return newHistory;
 }

@@ -16,6 +16,7 @@
     savingsHistory,
   } from "./store";
 
+  import PieChart from './components/pieChart.svelte';
   import Input from "./Input.svelte";
   import Button from "./components/button.svelte";
   import SavingHistory from "./components/savingHistory/savingHistory.svelte";
@@ -67,13 +68,16 @@
     font-size: 1.2rem;
     margin: 0.5rem 0;
   }
+  .currentRates {
+    margin: 1rem 0 2rem 0;
+  }
 </style>
 
 <div class="app">
   {#if $status === STATUS.loading}Загрузка{/if}
   {#if $status === STATUS.failed}{$error}{/if}
   {#if $status === STATUS.loaded}
-    <div class="sum">
+    <div class="currentRates">
       Доллар:
       <Money amount={$rates.USD} currency="USD" />
       Евро:
@@ -81,7 +85,7 @@
     </div>
   {/if}
   <div class="stats">
-    <form>
+    <form class="form">
       {#each financeKeys as key}
         <Input
           id={key}
@@ -93,9 +97,7 @@
       {/each}
       <Button on:click={add}>Добавить</Button>
     </form>
-    <div>
-      <SavingHistory />
-    </div>
+    <SavingHistory />
   </div>
 
   <div class="results">
@@ -110,6 +112,7 @@
       <Money amount={$totalSaving.EUR} currency="EUR" />
     </div>
   </div>
+  <PieChart />
 
   <!-- <Diagram xData={data.columns[0]} yData={data.columns[1]} colors={data.colors} title="Chart 3" /> -->
 </div>
