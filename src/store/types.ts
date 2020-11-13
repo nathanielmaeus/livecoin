@@ -1,9 +1,10 @@
 export interface IRates {
   USD: number;
   EUR: number;
+  RUB: number;
 }
 
-export type currencyType = "USD" | "EUR";
+export type currencyType = "USD" | "EUR" | "RUB";
 
 export interface ISavings {
   USD: number;

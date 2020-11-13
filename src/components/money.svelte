@@ -1,15 +1,9 @@
 <script>
-  import { round } from "../helpers";
+  import { round, getCurrencySymbol } from "../helpers";
 
   export let amount = "Mistake";
   export let currency;
   export let withK = false;
-
-  const SYMBOL = {
-    EUR: "€",
-    USD: "$",
-    RUB: "₽",
-  }[currency || "RUB"];
 </script>
 
 <style>
@@ -18,4 +12,4 @@
   }
 </style>
 
-<span class="sum">{round(amount, withK)} {SYMBOL}</span>
+<span class="sum">{round(amount, withK)} {getCurrencySymbol(currency)}</span>

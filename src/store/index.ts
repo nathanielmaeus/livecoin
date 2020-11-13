@@ -26,7 +26,7 @@ const INITIAL: IFinance = {
 
 export const status = createStore<STATUS>(STATUS.initial);
 export const error = createStore<string | null>(null);
-export const rates = createStore<IRates>({ USD: 0, EUR: 0 });
+export const rates = createStore<IRates>({ USD: 0, EUR: 0, RUB: 0 });
 export const historyRates = createStore<IRates[]>([]);
 export const date = createStore<string | null>(null);
 export const savingsHistory = createStore<ITotalStorage[]>([]);
@@ -43,18 +43,66 @@ export const totalSaving = combine(finance, rates, (finance, rates) => {
     return initial;
   }
 
-  return Object.keys(finance).reduce((acc, key) => {
+  const totalOnlyWithRUB = Object.keys(finance).reduce((acc, key) => {
     const { currency, amount } = finance[key];
     if (!amount) {
       return acc;
     }
-    acc["RUB"] += amount * rates[currency];
-    acc["EUR"] += acc["RUB"] / rates["EUR"];
-    acc["USD"] += acc["RUB"] / rates["USD"];
 
+    acc["RUB"] += amount * rates[currency];
     return acc;
   }, initial);
+
+  totalOnlyWithRUB["EUR"] = totalOnlyWithRUB.RUB / rates["EUR"];
+  totalOnlyWithRUB["USD"] = totalOnlyWithRUB.RUB / rates["USD"];
+
+  return totalOnlyWithRUB;
 });
+
+export const totalRation = combine(
+  totalSaving,
+  finance,
+  (totalSaving, finance) => {
+    const initial = {
+      USD: 0,
+      EUR: 0,
+      RUB: 0,
+    };
+
+    if (!finance) {
+      return initial;
+    }
+
+    const separateCurrencyTotal = Object.keys(finance).reduce((acc, key) => {
+      const { currency, amount } = finance[key];
+
+      if (!amount) {
+        return acc;
+      }
+
+      acc[currency] += amount;
+      return acc;
+    }, initial);
+
+    const separateCurrencyTotalKeys = Object.keys(
+      separateCurrencyTotal
+    ) as Array<keyof typeof separateCurrencyTotal>;
+
+    const ratioTotal = separateCurrencyTotalKeys.reduce(
+      (acc, key: keyof IRates) => {
+        acc[key] += Math.round(separateCurrencyTotal[key] / totalSaving[key] * 100);
+        return acc;
+      },
+      {
+        USD: 0,
+        EUR: 0,
+        RUB: 0,
+      }
+    );
+
+    return ratioTotal;
+  }
+);
 
 export const createAccount = createEvent<void>();
 export const updateAccount = createEvent<IAccount>();

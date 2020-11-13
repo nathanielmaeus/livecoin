@@ -1,4 +1,11 @@
 <script>
+  import Path from "./path.svelte";
+  const data = [6, 2, 1, 8, 10, 4, 5, 2, 7, 8, 12];
+  const radius = 100;
+  const total = data.reduce((a, b) => a + b, 0);
+  const diameter = 2 * radius;
+
+  $: rotate = 0.5 * Math.PI;
 </script>
 
 <style>
@@ -8,36 +15,11 @@
     width: 230px;
     height: 230px;
   }
-
-  .circle-underlay {
-    transform-origin: center;
-    transform: rotate(65deg);
-  }
 </style>
 
-<svg width="100" height="100" viewBox="0 0 32 32">
-  <title>
-    Circle representing a pie chart with a purple 25% piece, a pink 45% piece,
-    and a green 30% piece
-  </title>
-  <desc>Pink piece of chart representing 45%</desc>
-  <circle
-    class="circle-underlay"
-    r="16"
-    cx="16"
-    cy="16"
-    fill="#5DC3B3"
-    stroke="pink"
-    stroke-width="32"
-    stroke-dasharray="10 100" />
-  <desc>Purple piece of chart representing 25%</desc>
-  <circle
-    class="circle-overlay"
-    r="16"
-    cx="16"
-    cy="16"
-    fill="transparent"
-    stroke="#221A46"
-    stroke-width="32"
-    stroke-dasharray="30 100" />
+<svg width={diameter} height={diameter} viewBox={`0 0 ${diameter} ${diameter}`}>
+  {#each data as value, i}
+    {(rotate += (2 * Math.PI * value) / total)}
+    <Path {value} {i} {total} {radius} {rotate} />
+  {/each}
 </svg>

@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { round } from "./helpers";
+  import { round, getCurrencySymbol } from "./helpers";
   import {
     initializeSavings,
     getAllCurrency,
@@ -14,9 +14,10 @@
     STATUS,
     totalSaving,
     savingsHistory,
+    totalRation,
   } from "./store";
 
-  import PieChart from './components/pieChart.svelte';
+  import PieChart from "./components/pieChart.svelte";
   import Input from "./Input.svelte";
   import Button from "./components/button.svelte";
   import SavingHistory from "./components/savingHistory/savingHistory.svelte";
@@ -111,8 +112,15 @@
     <div class="sum">
       <Money amount={$totalSaving.EUR} currency="EUR" />
     </div>
+    <div class="results sum">
+      {getCurrencySymbol('RUB')}:
+      {$totalRation.RUB}%
+      {getCurrencySymbol('EUR')}:
+      {$totalRation.EUR}%
+      {getCurrencySymbol('USD')}:
+      {$totalRation.USD}%
+    </div>
   </div>
   <PieChart />
-
   <!-- <Diagram xData={data.columns[0]} yData={data.columns[1]} colors={data.colors} title="Chart 3" /> -->
 </div>
