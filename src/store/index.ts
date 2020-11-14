@@ -59,31 +59,33 @@ export const totalSaving = combine(finance, rates, (finance, rates) => {
   return totalOnlyWithRUB;
 });
 
-export const totalRation = combine(
-  totalSaving,
-  finance,
-  (totalSaving, finance) => {
-    const initial = {
-      USD: 0,
-      EUR: 0,
-      RUB: 0,
-    };
+export const separateCurrencyTotal = combine(finance, (finance) => {
+  const initial = {
+    USD: 0,
+    EUR: 0,
+    RUB: 0,
+  };
 
-    if (!finance) {
-      return initial;
+  if (!finance) {
+    return initial;
+  }
+
+  return Object.keys(finance).reduce((acc, key) => {
+    const { currency, amount } = finance[key];
+
+    if (!amount) {
+      return acc;
     }
 
-    const separateCurrencyTotal = Object.keys(finance).reduce((acc, key) => {
-      const { currency, amount } = finance[key];
+    acc[currency] += amount;
+    return acc;
+  }, initial);
+});
 
-      if (!amount) {
-        return acc;
-      }
-
-      acc[currency] += amount;
-      return acc;
-    }, initial);
-
+export const totalRatio = combine(
+  separateCurrencyTotal,
+  totalSaving,
+  (separateCurrencyTotal, totalSaving) => {
     const separateCurrencyTotalKeys = Object.keys(
       separateCurrencyTotal
     ) as Array<keyof typeof separateCurrencyTotal>;

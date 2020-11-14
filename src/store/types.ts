@@ -74,3 +74,9 @@ export interface Rates {
   KRW: number;
   PLN: number;
 }
+
+export interface ISlice {
+  color: string;
+  value: number;
+  text: string;
+}

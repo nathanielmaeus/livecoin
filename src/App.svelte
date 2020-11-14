@@ -1,6 +1,5 @@
-<script>
+<script lang="ts">
   import { onMount } from "svelte";
-  import { round, getCurrencySymbol } from "./helpers";
   import {
     initializeSavings,
     getAllCurrency,
@@ -13,8 +12,8 @@
     finance,
     STATUS,
     totalSaving,
-    savingsHistory,
-    totalRation,
+    totalRatio,
+    separateCurrencyTotal,
   } from "./store";
 
   import PieChart from "./components/pieChart.svelte";
@@ -22,34 +21,50 @@
   import Button from "./components/button.svelte";
   import SavingHistory from "./components/savingHistory/savingHistory.svelte";
   import Money from "./components/money.svelte";
-  import Diagram from "./components/diagram.svelte";
+  import type { IAccount, ISlice } from "./store/types";
 
-  import { data } from "./data";
+
+  let slices: ISlice[] = [];
 
   onMount(() => {
     initializeSavings();
     getAllCurrency();
   });
 
-  function handleChange({ detail }) {
-    console.log(detail);
+  function handleChange({ detail }: { detail: IAccount }) {
     updateAccount(detail);
   }
 
-  function handleDelete({ detail }) {
+  function handleDelete({ detail }: { detail: number }) {
     deleteAccount(detail);
   }
 
-  function add(e) {
+  function add(e: Event) {
     e.preventDefault();
     createAccount();
   }
 
   $: financeKeys = $finance ? Object.keys($finance) : [];
 
-  const product = {
-    banans: data.columns[1],
-  };
+  $: {
+    slices = [
+      {
+        color: "#eee",
+        value: $totalRatio.RUB || 1,
+        text: "RUB",
+      },
+      {
+        color: "#0a7734",
+        value: $totalRatio.EUR || 1,
+        text: "EUR",
+      },
+      {
+        color: "#d10d17",
+        value: $totalRatio.USD || 1,
+        text: "USD",
+      },
+    ];
+  }
 </script>
 
 <style lang="css">
@@ -71,6 +86,10 @@
   }
   .currentRates {
     margin: 1rem 0 2rem 0;
+  }
+  .results {
+    display: flex;
+    align-items: center;
   }
 </style>
 
@@ -101,26 +120,37 @@
     <SavingHistory />
   </div>
 
-  <div class="results">
-    Общая сумма:
-    <div class="sum">
-      <Money amount={$totalSaving.RUB} currency="RUB" />
+  <div>
+    <div class="results">
+      <div class="sum">
+        <Money amount={$totalSaving.RUB} currency="RUB" />,
+      </div>
+      <div class="sum">
+        <Money amount={$totalSaving.USD} currency="USD" />,
+      </div>
+      <div class="sum">
+        <Money amount={$totalSaving.EUR} currency="EUR" />,
+      </div>
     </div>
-    <div class="sum">
-      <Money amount={$totalSaving.USD} currency="USD" />
-    </div>
-    <div class="sum">
-      <Money amount={$totalSaving.EUR} currency="EUR" />
-    </div>
-    <div class="results sum">
-      {getCurrencySymbol('RUB')}:
-      {$totalRation.RUB}%
-      {getCurrencySymbol('EUR')}:
-      {$totalRation.EUR}%
-      {getCurrencySymbol('USD')}:
-      {$totalRation.USD}%
+    <div class="ratioCurrency">
+      <div class="results">
+        <div class="sum">
+          <Money
+            amount={$separateCurrencyTotal.RUB}
+            currency="RUB" />({$totalRatio.RUB}%),
+        </div>
+        <div class="sum">
+          <Money
+            amount={$separateCurrencyTotal.USD}
+            currency="USD" />({$totalRatio.USD}%),
+        </div>
+        <div class="sum">
+          <Money
+            amount={$separateCurrencyTotal.EUR}
+            currency="EUR" />({$totalRatio.EUR}%)
+        </div>
+      </div>
+      <PieChart {slices} />
     </div>
   </div>
-  <PieChart />
-  <!-- <Diagram xData={data.columns[0]} yData={data.columns[1]} colors={data.colors} title="Chart 3" /> -->
 </div>

@@ -1,10 +1,12 @@
-<script>
+<script lang="ts">
   import { round } from "../../helpers";
+  import type { ITotalStorage } from "../../store/types";
   import Money from "../money.svelte";
-  export let item;
-  export let prevItem;
 
-  const prevAmount = prevItem ? prevItem.RUB : 0;
+  export let item: ITotalStorage;
+  export let prevItem: ITotalStorage;
+
+  const prevAmount: number = prevItem ? prevItem.RUB : 0;
   $: diffAmount = prevItem ? round(item.RUB - prevAmount) : 0;
 </script>
 
@@ -35,9 +37,10 @@
 <div class="sum">
   <span>
     {item.date}:
+
     <Money amount={item.RUB} currency="RUB" />
   </span>
   <span class="diff" class:green={diffAmount >= 0} class:red={diffAmount < 0}>
-    <Money amount={diffAmount} currency="RUB" withK={true} />
+    <Money amount={Number(diffAmount)} currency="RUB" withK={true} />
   </span>
 </div>

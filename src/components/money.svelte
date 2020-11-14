@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
   import { round, getCurrencySymbol } from "../helpers";
+  import type { IRates } from "../store/types";
 
-  export let amount = "Mistake";
-  export let currency;
-  export let withK = false;
+  export let amount: number = 0;
+  export let currency: keyof IRates;
+  export let withK: boolean = false;
 </script>
 
 <style>

@@ -1,13 +1,14 @@
-<script>
+<script lang="ts">
   import { createEventDispatcher, tick } from "svelte";
   import Button from "./components/button.svelte";
+  import type { IRates } from "./store/types";
 
-  export let name;
-  export let amount;
-  export let currency;
+  export let name: string;
+  export let amount: number;
+  export let currency: keyof IRates;
   export let id = "";
 
-  let inputRef = null;
+  let inputRef: HTMLInputElement | null = null;
 
   const dispatch = createEventDispatcher();
 
@@ -27,7 +28,7 @@
     }
   }
 
-  function handleDelete(e) {
+  function handleDelete(e: Event) {
     e.preventDefault();
     dispatch("delete", id);
   }
@@ -35,7 +36,7 @@
   async function handleClickOnName() {
     isInputNameVisible = !isInputNameVisible;
     await tick();
-    inputRef.focus();
+    inputRef!.focus();
   }
 </script>
 
@@ -56,7 +57,6 @@
   .accountName {
     min-width: 210px;
     margin: 0 0.5rem 0 0.5rem;
-
   }
 
   .input {

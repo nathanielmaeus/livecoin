@@ -501,27 +501,6 @@ class SvelteComponentDev extends SvelteComponent {
     $inject_state() { }
 }
 
-function round(value, withK) {
-    if (withK) {
-        return `${Math.round(value / 1000 / 23)}k`;
-    }
-    return Math.round(value * 100 / 23) / 100;
-}
-function parseDate() {
-    const currentDate = new Date();
-    const day = currentDate.getDate().toString().padStart(2, "0");
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-    const year = currentDate.getFullYear();
-    return `${day}-${month}-${year}`;
-}
-function getCurrencySymbol(currency) {
-    return {
-        EUR: "€",
-        USD: "$",
-        RUB: "₽",
-    }[currency || "RUB"];
-}
-
 function e({node:e=[],from:t,source:r,parent:a=t||r,to:n,target:o,child:s=n||o,scope:l={},meta:f={},family:i={type:'regular'}}={}){let c=be(a),u=be(i.links),p=be(i.owners),d=[],m={};for(let t=0;t<e.length;t++){let r=e[t];r&&(d.push(r),ve(r,m));}let h={id:B(),seq:d,next:be(s),meta:f,scope:l,family:{type:i.type||'crosslink',links:u,owners:p},reg:m};for(let e=0;e<u.length;e++)ce(u[e]).push(h);for(let e=0;e<p.length;e++)ue(p[e]).push(h);for(let e=0;e<c.length;e++)c[e].next.push(h);return h}function t(e,t="combine"){let r=t+'(',a='',n=0;for(let t in e){let o=e[t];if(null!=o&&(r+=a,r+=D(o)?o.compositeName.fullName:o.toString()),n+=1,25===n)break;a=', ';}return r+=')',r}function a(e,t){let r,a,n,o=e;return t?(n=t.compositeName,0===e.length?(r=n.path,a=n.fullName):(r=n.path.concat([e]),a=0===n.fullName.length?e:n.fullName+'/'+e)):(r=0===e.length?[]:[e],a=e),{shortName:o,fullName:a,path:r}}function s(t,r){let a=(e,...t)=>Re?((e,t,r,a)=>{let n=Re,o=null;if(t)for(o=Re;o&&o.template!==t;)o=ye(o);Ie(o);let s=e.create(r,a);return Ie(n),s})(a,n,e,t):a.create(e,t);a.graphite=e({meta:st('event',a,r,t)}),a.create=e=>{let t=Oe?Oe.find(a):a;return Me(t,e),e},a.watch=J(rt,a),a.map=e=>{let t,r;T(e)&&(t=e,r=e.name,e=e.fn);let n=s(ze(a,r),t);return ft(a,n,'map',e),n},a.filter=e=>ct(a,'filter',e.fn?e:e.fn,[ee({fn:fe})]),a.filterMap=e=>ct(a,'filterMap',e,[Z({fn:fe}),Y.defined()]),a.prepend=e=>{let t=s('* → '+a.shortName,{parent:ye(a)});return ft(t,a,'prepend',e),ot(a,t),t};let n=Xe();return Qe(a)}function l(t,r){function a(e,t){c.off(e),ge(c).set(e,Le(ut(e,c,'on',1,t)));}let n=ne(t),o=ne(t),s=lt('updates'),f=Xe();n.after=[{type:'copy',to:o}],f;let i=n.id,c={subscribers:new Map,updates:s,defaultState:t,stateRef:n,getState(){let e,t=n;if(Re){let t=Re;for(;t&&!t.reg[i];)t=ye(t);t&&(e=t);}return !e&&Oe&&Oe.reg[i]&&(e=Oe),e&&(t=e.reg[i]),oe(t)},setState(e){let t;Oe&&(t=Oe.nodeMap[ie(c).id]),t||(t=c),Me({target:t,params:e,defer:1});},reset(...e){for(let t of e)c.on(t,(()=>c.defaultState));return c},on(e,t){if(Array.isArray(e))for(let r of e)a(r,t);else a(e,t);return c},off(e){let t=ge(c).get(e);return t&&(t(),ge(c).delete(e)),c},map(e,t){let r,a,o;T(e)&&(r=e,a=e.name,t=e.firstState,e=e.fn);let s=c.getState();void 0!==s&&(o=e(s,t));let i=l(o,{name:ze(c,a),config:r,strict:0}),u=ut(c,i,'map',0,e);return pe(i).before=[{type:'map',fn:e,from:n}],i},watch(e,t){if(!t||!D(e)){let t=rt(c,e);return e(c.getState()),t}return W(t)||z('second argument should be a function'),e.watch((e=>t(c.getState(),e)))}};return c.graphite=e({scope:{state:n},node:[Y.defined(),re({store:n}),Y.changed({store:o}),re({store:o})],child:s,meta:st('store',c,r)}),nt&&void 0===t&&z("current state can't be undefined, use null instead"),ke(c,[s]),Qe(c)}function f(...e){let t,r,a;Te(e[0],((t,r)=>{a=t,e=r;}));let n,o,s=e[e.length-1];if(W(s)?(r=e.slice(0,-1),t=s):r=e,1===r.length){let e=r[0];F(e)||(n=e,o=1);}return o||(n=r,t&&(t=pt(t))),T(n)||z('shape should be an object'),dt(Array.isArray(n),n,a,t)}function i(){let e={};return e.req=new Promise(((t,r)=>{e.rs=t,e.rj=r;})),e.req.catch((()=>{})),e}function c(t,r){let a=s(t,r),n=a.defaultConfig.handler||(()=>z("no handler used in "+a.getType())),o=ie(a);o.meta.onCopy=['runner'],o.meta.unit=a.kind='effect',a.use=e=>(W(e)||z('.use argument should be a function'),n=e,a);let f=a.finally=lt('finally'),c=a.done=f.filterMap({named:'done',fn({status:e,params:t,result:r}){if('done'===e)return {params:t,result:r}}}),u=a.fail=f.filterMap({named:'fail',fn({status:e,params:t,error:r}){if('fail'===e)return {params:t,error:r}}}),p=a.doneData=c.map({named:'doneData',fn:({result:e})=>e}),d=a.failData=u.map({named:'failData',fn:({error:e})=>e}),m=e({scope:{getHandler:a.use.getCurrent=()=>n,finally:f},node:[te({fn({params:e,req:t},{finally:r,getHandler:a},{page:n,forkPage:o}){let s,l=mt({params:e,req:t,ok:1,anyway:r,page:n,forkPage:o}),f=mt({params:e,req:t,ok:0,anyway:r,page:n,forkPage:o});try{s=a()(e);}catch(e){return void f(e)}T(s)&&W(s.then)?s.then(l,f):l(s);}})],meta:{op:'fx',fx:'runner',onCopy:['finally']}});o.scope.runner=m,o.seq.push(Z({fn:(e,t,r)=>ye(r)?{params:e,req:{rs(e){},rj(e){}}}:e}),te({fn:(e,{runner:t},{forkPage:r})=>(Me({target:t,params:e,defer:1,forkPage:r}),e.params)})),a.create=e=>{let t=i(),r={params:e,req:t};if(Oe){let e=Oe;t.req.finally((()=>{Fe(e);})),Me(Oe.find(a),r);}else Me(a,r);return t.req};let h=a.inFlight=l(0,{named:'inFlight'}).on(a,(e=>e+1)).on(f,(e=>e-1)),g=a.pending=h.map({fn:e=>e>0,named:'pending'});return ke(a,[f,c,u,p,d,g,h,m]),a}let O='undefined'!=typeof Symbol&&Symbol.observable||'@@observable',D=e=>(W(e)||T(e))&&'kind'in e;const R=e=>t=>D(t)&&t.kind===e;let F=R('store'),_=R('domain');let z=e=>{throw Error(e)},T=e=>'object'==typeof e&&null!==e,W=e=>'function'==typeof e,$=e=>{T(e)||W(e)||z('expect first argument be an object');};const H=()=>{let e=0;return ()=>(++e).toString(36)};let G=H(),U=H(),B=H(),J=(e,t)=>e.bind(null,t),K=(e,t,r)=>e.bind(null,t,r);const L=(e,t,r)=>({id:U(),type:e,data:r,hasRef:t});let Q=0,V=({priority:e="barrier"})=>L('barrier',0,{barrierID:++Q,priority:e}),X=({from:e="store",store:t,target:r,to:a=(r?'store':'stack')})=>L('mov','store'===e,{from:e,store:t,to:a,target:r}),Y={defined:()=>L('check',0,{type:'defined'}),changed:({store:e})=>L('check',1,{type:'changed',store:e})},Z=K(L,'compute',0),ee=K(L,'filter',0),te=K(L,'run',0),re=({store:e})=>X({from:'stack',target:e});let ne=e=>({id:U(),current:e}),oe=({current:e})=>e,se=(e,{fn:t},{a:r})=>t(e,r),le=(e,{fn:t},{a:r})=>t(r,e),fe=(e,{fn:t})=>t(e),ie=e=>e.graphite||e,ce=e=>e.family.owners,ue=e=>e.family.links,pe=e=>e.stateRef,de=e=>e.config,me=e=>e.ɔ,he=e=>e.value,ge=e=>e.subscribers,ye=e=>e.parent,ke=(e,t)=>{let r=ie(e);for(let e=0;e<t.length;e++){let a=ie(t[e]);'domain'!==r.family.type&&(a.family.type='crosslink'),ce(a).push(r),ue(r).push(a);}};const be=(e=[])=>{let t=[];if(Array.isArray(e))for(let r=0;r<e.length;r++)Array.isArray(e[r])?t.push(...e[r]):t.push(e[r]);else t.push(e);return t.map(ie)};let ve=({hasRef:e,type:t,data:r},a)=>{let n;e&&(n=r.store,a[n.id]=n),'mov'===t&&'store'===r.to&&(n=r.target,a[n.id]=n);},we=null;const Se=(e,t)=>{if(!e)return t;if(!t)return e;let r,a=e.v.type===t.v.type;return (a&&e.v.id>t.v.id||!a&&'sampler'===e.v.type)&&(r=e,e=t,t=r),r=Se(e.r,t),e.r=e.l,e.l=r,e},qe=[];let xe=0;for(;xe<5;)qe.push({first:null,last:null,size:0}),xe+=1;const Ne=()=>{for(let e=0;e<5;e++){let t=qe[e];if(t.size>0){if(2===e||3===e){t.size-=1;let e=we.v;return we=Se(we.l,we.r),e}1===t.size&&(t.last=null);let r=t.first;return t.first=r.r,t.size-=1,r.v}}},Pe=(e,t,r,a,n,o)=>je(0,{a:null,b:null,node:r,parent:a,value:n,page:t,forkPage:o},e),je=(e,t,r,a=0)=>{let n=Ae(r),o=qe[n],s={v:{idx:e,stack:t,type:r,id:a},l:0,r:0};2===n||3===n?we=Se(we,s):(0===o.size?o.first=s:o.last.r=s,o.last=s),o.size+=1;},Ae=e=>{switch(e){case'child':return 0;case'pure':return 1;case'barrier':return 2;case'sampler':return 3;case'effect':return 4;default:return -1}},Ce=new Set;let Oe,De=0,Re=null,Fe=e=>{Oe=e;},Ie=e=>{Re=e;},Me=(e,t,r)=>{let a=Re,n=null,o=Oe;if(e.target&&(t=e.params,r=e.defer,a='page'in e?e.page:a,e.stack&&(n=e.stack),o=e.forkPage||o,e=e.target),Array.isArray(e))for(let r=0;r<e.length;r++)Pe('pure',a,ie(e[r]),n,t[r],o);else Pe('pure',a,ie(e),n,t,o);r&&De||(()=>{let e,t,r,a,n,o,s={alreadyStarted:De,currentPage:Re,forkPage:Oe};De=1;e:for(;a=Ne();){let{idx:s,stack:l,type:f}=a;r=l.node,Re=n=l.page,Oe=l.forkPage,o=(n||r).reg;let i={fail:0,scope:r.scope};e=t=0;for(let a=s;a<r.seq.length&&!e;a++){let c=r.seq[a],u=c.data;switch(c.type){case'barrier':{let e=u.barrierID;n&&(e=`${n.fullID}_${e}`);let t=u.priority;if(a!==s||f!==t){Ce.has(e)||(Ce.add(e),je(a,l,t,e));continue e}Ce.delete(e);break}case'mov':{let e;switch(u.from){case'stack':e=he(l);break;case'a':e=l.a;break;case'b':e=l.b;break;case'value':e=u.store;break;case'store':o[u.store.id]||(l.page=n=null,o=r.reg),e=oe(o[u.store.id]);}switch(u.to){case'stack':l.value=e;break;case'a':l.a=e;break;case'b':l.b=e;break;case'store':o[u.target.id].current=e;}break}case'check':switch(u.type){case'defined':t=void 0===he(l);break;case'changed':t=he(l)===oe(o[u.store.id]);}break;case'filter':t=!_e(i,u,l);break;case'run':if(a!==s||'effect'!==f){je(a,l,'effect');continue e}case'compute':l.value=_e(i,u,l);}e=i.fail||t;}if(!e)for(let e=0;e<r.next.length;e++)Pe('child',n,r.next[e],l,he(l),l.forkPage);}De=s.alreadyStarted,Re=s.currentPage,Oe=s.forkPage;})();};const _e=(e,{fn:t},r)=>{try{return t(he(r),e.scope,r)}catch(t){console.error(t),e.fail=1;}};let Ee=(e,t)=>''+e.shortName+t,ze=(e,t)=>null==t?Ee(e,' → *'):t,Te=(e,t)=>{$(e),me(e)&&t(de(e),me(e));},$e=(e,t)=>{for(let r in e)t(e[r],r);},Ge=(e,t)=>{let r=e.indexOf(t);-1!==r&&e.splice(r,1);};const Ue=(e,t)=>{Ge(e.next,t),Ge(ce(e),t),Ge(ue(e),t);},Be=(e,t,r)=>{let a;e.next.length=0,e.seq.length=0,e.scope=null;let n=ue(e);for(;a=n.pop();)Ue(a,e),(t||r&&!e.meta.sample||'crosslink'===a.family.type)&&Be(a,t,r);for(n=ce(e);a=n.pop();)Ue(a,e),r&&'crosslink'===a.family.type&&Be(a,t,r);},Je=e=>e.clear();let Ke=(e,{deep:t}={})=>{let r=0;if(e.ownerSet&&e.ownerSet.delete(e),F(e))Je(ge(e));else if(_(e)){r=1;let t=e.history;Je(t.events),Je(t.effects),Je(t.stores),Je(t.domains);}Be(ie(e),!!t,r);},Le=e=>{let t=K(Ke,e,void 0);return t.unsubscribe=t,t},Qe=e=>(e),Ve=null,Xe=()=>Ve,Ye=e=>(e&&Ve&&Ve.sidRoot&&(e=`${Ve.sidRoot}ɔ${e}`),e),et=(t,r,{node:a,scope:n,meta:o})=>Qe(e({node:a,parent:t,child:r,scope:n,meta:o,family:{owners:[t,r],links:r}})),tt=t=>{let r;Te(t,((e,a)=>{r=e,t=a;}));let{from:a,to:n,meta:o={op:'forward'}}=t;return a&&n||z('from and to fields should be defined'),r&&(o.config=r),Le(Qe(e({parent:a,child:n,meta:o,family:{}})))},rt=(t,r)=>{if(W(r)||z('.watch argument should be a function'),Oe){let e=Oe.nodeMap[ie(t).id];e&&(t=e);}return Le(Qe(e({scope:{fn:r},node:[te({fn:fe})],parent:t,meta:{op:'watch'},family:{owners:t}})))};const at=(e,t)=>(T(e)&&(at(de(e),t),null!=e.name&&(T(e.name)?at(e.name,t):W(e.name)?t.handler=e.name:t.name=e.name),e.loc&&(t.loc=e.loc),(e.sid||null===e.sid)&&(t.sid=e.sid),e.handler&&(t.handler=e.handler),ye(e)&&(t.parent=ye(e)),'strict'in e&&(t.strict=e.strict),e.named&&(t.named=e.named),at(me(e),t)),t);let nt,ot=(e,t,r="event")=>{ye(e)&&ye(e).hooks[r](t);},st=(e,t,r,n)=>{let o=at({name:n,config:r},{}),s=G(),{parent:l=null,sid:f=null,strict:i=1,named:c=null}=o,u=c||o.name||('domain'===e?'':s),p=a(u,l);return f=Ye(f),t.kind=e,t.id=s,t.sid=f,t.shortName=u,t.parent=l,t.compositeName=p,t.defaultConfig=o,t.thru=e=>e(t),t.getType=()=>p.fullName,'domain'!==e&&(t.subscribe=e=>($(e),t.watch(W(e)?e:t=>{e.next&&e.next(t);})),t[O]=()=>t),nt=i,{unit:e,name:u,sid:f,named:c}},lt=e=>s({named:e});const ft=(e,t,r,a)=>et(e,t,{scope:{fn:a},node:[Z({fn:fe})],meta:{op:r}}),ct=(e,t,r,a)=>{let n;T(r)&&(n=r,r=r.fn);let o=s(Ee(e,' →? *'),n);return et(e,o,{scope:{fn:r},node:a,meta:{op:t}}),o},ut=(e,t,r,a,n)=>{let o=pe(t),s=[X({store:o,to:'a'}),Z({fn:a?le:se}),Y.defined(),Y.changed({store:o}),re({store:o})];return et(e,t,{scope:{fn:n},node:s,meta:{op:r}})},pt=e=>t=>e(...t),dt=(e,r,a,n)=>{let o=e?e=>e.slice():e=>Object.assign({},e),s=e?[]:{},f=Xe(),i=o(s),c=ne(i),u=ne(1);c.type=e?'list':'shape',f;let p=l(i,{name:a||t(r)}),d=[Y.defined(),X({store:c,to:'a'}),ee({fn:(e,{key:t},{a:r})=>e!==r[t]}),X({store:u,to:'b'}),Z({fn(e,{clone:t,key:r},a){a.b&&(a.a=t(a.a)),a.a[r]=e;}}),X({from:'a',target:c}),X({from:'value',store:0,target:u}),V({priority:'barrier'}),X({from:'value',store:1,target:u}),X({store:c}),n&&Z({fn:n}),Y.changed({store:pe(p)})],m=c.before=[];return $e(r,((e,t)=>{if(!F(e))return void(i[t]=s[t]=e);s[t]=e.defaultState,i[t]=e.getState();let r=et(e,p,{scope:{key:t,clone:o},node:d,meta:{op:'combine'}}),a=pe(e);m.push({type:'field',field:t,from:a}),f;})),p.defaultShape=r,c.after=[n?{type:'map',to:pe(p),fn:n}:{type:'copy',to:pe(p)}],(p.defaultState=n?pe(p).current=n(i):s),p};let mt=({params:e,req:t,ok:r,anyway:a,page:n,forkPage:o})=>s=>Me({target:[a,ht],params:[r?{status:'done',params:e,result:s}:{status:'fail',params:e,error:s},{fn:r?t.rs:t.rj,value:s}],defer:1,page:n,forkPage:o});const ht=e({node:[te({fn({fn:e,value:t}){e(t);}})],meta:{op:'fx',fx:'sidechain'}});
 
 var STATUS;
@@ -567,7 +546,7 @@ const totalSaving = f(finance, rates, (finance, rates) => {
     totalOnlyWithRUB["USD"] = totalOnlyWithRUB.RUB / rates["USD"];
     return totalOnlyWithRUB;
 });
-const totalRation = f(totalSaving, finance, (totalSaving, finance) => {
+const separateCurrencyTotal = f(finance, (finance) => {
     const initial = {
         USD: 0,
         EUR: 0,
@@ -576,7 +555,7 @@ const totalRation = f(totalSaving, finance, (totalSaving, finance) => {
     if (!finance) {
         return initial;
     }
-    const separateCurrencyTotal = Object.keys(finance).reduce((acc, key) => {
+    return Object.keys(finance).reduce((acc, key) => {
         const { currency, amount } = finance[key];
         if (!amount) {
             return acc;
@@ -584,6 +563,8 @@ const totalRation = f(totalSaving, finance, (totalSaving, finance) => {
         acc[currency] += amount;
         return acc;
     }, initial);
+});
+const totalRatio = f(separateCurrencyTotal, totalSaving, (separateCurrencyTotal, totalSaving) => {
     const separateCurrencyTotalKeys = Object.keys(separateCurrencyTotal);
     const ratioTotal = separateCurrencyTotalKeys.reduce((acc, key) => {
         acc[key] += Math.round(separateCurrencyTotal[key] / totalSaving[key] * 100);
@@ -602,32 +583,139 @@ const initializeSavings = s();
 const getAllCurrency = c();
 const saveTotal = c();
 
-/* src/components/path.svelte generated by Svelte v3.29.4 */
-const file = "src/components/path.svelte";
+/* src/components/pieChart.svelte generated by Svelte v3.29.4 */
 
-function create_fragment(ctx) {
+const file = "src/components/pieChart.svelte";
+
+function get_each_context(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[6] = list[i];
+	return child_ctx;
+}
+
+// (60:4) {#each pathes as path}
+function create_each_block(ctx) {
+	let text_1;
+	let t0_value = /*slices*/ ctx[0][/*path*/ ctx[6].key].value + "";
+	let t0;
+	let text_1_x_value;
+	let text_1_y_value;
 	let path;
-	let path_style_value;
 	let path_d_value;
+	let path_fill_value;
+	let t1;
 
 	const block = {
 		c: function create() {
+			text_1 = svg_element("text");
+			t0 = text(t0_value);
 			path = svg_element("path");
-			attr_dev(path, "style", path_style_value = `fill: ${/*fill*/ ctx[0]}; transform: ${/*transform*/ ctx[1]}; transform-origin: ${/*transformOrigin*/ ctx[2]};`);
-			attr_dev(path, "d", path_d_value = `M${/*r*/ ctx[3]} ${/*r*/ ctx[3]}V0a${/*r*/ ctx[3]} ${/*r*/ ctx[3]} 0 0 1 ${/*dx*/ ctx[4]} ${/*dy*/ ctx[5]}z`);
-			add_location(path, file, 19, 0, 437);
+			t1 = text(";");
+			attr_dev(text_1, "x", text_1_x_value = /*path*/ ctx[6].lastX);
+			attr_dev(text_1, "y", text_1_y_value = /*path*/ ctx[6].lastY);
+			attr_dev(text_1, "fill", "#fff");
+			add_location(text_1, file, 60, 6, 1559);
+			attr_dev(path, "d", path_d_value = /*path*/ ctx[6].d);
+			attr_dev(path, "fill", path_fill_value = /*path*/ ctx[6].fill);
+			attr_dev(path, "class", "svelte-1j4taef");
+			add_location(path, file, 63, 6, 1661);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, text_1, anchor);
+			append_dev(text_1, t0);
+			insert_dev(target, path, anchor);
+			insert_dev(target, t1, anchor);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty & /*slices*/ 1 && t0_value !== (t0_value = /*slices*/ ctx[0][/*path*/ ctx[6].key].value + "")) set_data_dev(t0, t0_value);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(text_1);
+			if (detaching) detach_dev(path);
+			if (detaching) detach_dev(t1);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block.name,
+		type: "each",
+		source: "(60:4) {#each pathes as path}",
+		ctx
+	});
+
+	return block;
+}
+
+function create_fragment(ctx) {
+	let svg;
+	let g;
+	let g_transform_value;
+	let svg_viewBox_value;
+	let each_value = /*pathes*/ ctx[2];
+	validate_each_argument(each_value);
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+	}
+
+	const block = {
+		c: function create() {
+			svg = svg_element("svg");
+			g = svg_element("g");
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			attr_dev(g, "transform", g_transform_value = `rotate(-90 ${/*center*/ ctx[1]} ${/*center*/ ctx[1]})`);
+			add_location(g, file, 58, 2, 1476);
+			attr_dev(svg, "viewBox", svg_viewBox_value = `0 0 ${size} ${size}`);
+			attr_dev(svg, "class", "svelte-1j4taef");
+			add_location(svg, file, 57, 0, 1436);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
 		},
 		m: function mount(target, anchor) {
-			insert_dev(target, path, anchor);
+			insert_dev(target, svg, anchor);
+			append_dev(svg, g);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(g, null);
+			}
 		},
-		p: noop,
+		p: function update(ctx, [dirty]) {
+			if (dirty & /*pathes, slices*/ 5) {
+				each_value = /*pathes*/ ctx[2];
+				validate_each_argument(each_value);
+				let i;
+
+				for (i = 0; i < each_value.length; i += 1) {
+					const child_ctx = get_each_context(ctx, each_value, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+					} else {
+						each_blocks[i] = create_each_block(child_ctx);
+						each_blocks[i].c();
+						each_blocks[i].m(g, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].d(1);
+				}
+
+				each_blocks.length = each_value.length;
+			}
+		},
 		i: noop,
 		o: noop,
 		d: function destroy(detaching) {
-			if (detaching) detach_dev(path);
+			if (detaching) detach_dev(svg);
+			destroy_each(each_blocks, detaching);
 		}
 	};
 
@@ -642,86 +730,90 @@ function create_fragment(ctx) {
 	return block;
 }
 
+const size = 100;
+
 function instance($$self, $$props, $$invalidate) {
 	let { $$slots: slots = {}, $$scope } = $$props;
-	validate_slots("Path", slots, []);
+	validate_slots("PieChart", slots, []);
+	
+	let { slices } = $$props;
+	const radCircumference = Math.PI * 2;
+	const center = size / 2;
+	const radius = center - 1;
 
-	let { radius } = $$props,
-		{ rotate } = $$props,
-		{ value } = $$props,
-		{ total } = $$props,
-		{ i } = $$props;
+	function renderPaths(slices) {
+		const total = slices.reduce((totalValue, { value }) => totalValue + value, 0);
+		let radSegment = 0;
+		let lastX = radius;
+		let lastY = 0;
 
-	const angle = 2 * Math.PI * value / total;
-	const fill = `hsl(${70 * i}, 100%, 50%)`;
-	const transform = `rotate(${round(rotate)}rad)`;
-	const transformOrigin = `${radius}px ${radius}px`;
+		return slices.map(({ color, value }, index) => {
+			if (value === 0) {
+				return {};
+			}
 
-	//rotate += angle;
-	const r = radius; // for brevity
+			const valuePercentage = value / total;
+			const longArc = valuePercentage <= 0.5 ? 0 : 1;
+			radSegment += valuePercentage * radCircumference;
+			const nextX = Math.cos(radSegment) * radius;
+			const nextY = Math.sin(radSegment) * radius;
 
-	const dx = r * Math.sin(angle);
-	const dy = r * (1 - Math.cos(angle));
-	const writable_props = ["radius", "rotate", "value", "total", "i"];
+			const d = [
+				`M ${center},${center}`,
+				`l ${lastX},${-lastY}`,
+				`a${radius},${radius}`,
+				"0",
+				`${longArc},0`,
+				`${nextX - lastX},${-(nextY - lastY)}`,
+				"z"
+			].join(" ");
+
+			lastX = nextX;
+			lastY = nextY;
+			return { d, lastX, lastY, fill: color, key: index };
+		});
+	}
+
+	const pathes = renderPaths(slices);
+	const writable_props = ["slices"];
 
 	Object.keys($$props).forEach(key => {
-		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Path> was created with unknown prop '${key}'`);
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<PieChart> was created with unknown prop '${key}'`);
 	});
 
 	$$self.$$set = $$props => {
-		if ("radius" in $$props) $$invalidate(6, radius = $$props.radius);
-		if ("rotate" in $$props) $$invalidate(7, rotate = $$props.rotate);
-		if ("value" in $$props) $$invalidate(8, value = $$props.value);
-		if ("total" in $$props) $$invalidate(9, total = $$props.total);
-		if ("i" in $$props) $$invalidate(10, i = $$props.i);
+		if ("slices" in $$props) $$invalidate(0, slices = $$props.slices);
 	};
 
 	$$self.$capture_state = () => ({
-		round,
+		slices,
+		size,
+		radCircumference,
+		center,
 		radius,
-		rotate,
-		value,
-		total,
-		i,
-		angle,
-		fill,
-		transform,
-		transformOrigin,
-		r,
-		dx,
-		dy
+		renderPaths,
+		pathes
 	});
 
 	$$self.$inject_state = $$props => {
-		if ("radius" in $$props) $$invalidate(6, radius = $$props.radius);
-		if ("rotate" in $$props) $$invalidate(7, rotate = $$props.rotate);
-		if ("value" in $$props) $$invalidate(8, value = $$props.value);
-		if ("total" in $$props) $$invalidate(9, total = $$props.total);
-		if ("i" in $$props) $$invalidate(10, i = $$props.i);
+		if ("slices" in $$props) $$invalidate(0, slices = $$props.slices);
 	};
 
 	if ($$props && "$$inject" in $$props) {
 		$$self.$inject_state($$props.$$inject);
 	}
 
-	return [fill, transform, transformOrigin, r, dx, dy, radius, rotate, value, total, i];
+	return [slices, center, pathes];
 }
 
-class Path extends SvelteComponentDev {
+class PieChart extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-
-		init(this, options, instance, create_fragment, safe_not_equal, {
-			radius: 6,
-			rotate: 7,
-			value: 8,
-			total: 9,
-			i: 10
-		});
+		init(this, options, instance, create_fragment, safe_not_equal, { slices: 0 });
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
-			tagName: "Path",
+			tagName: "PieChart",
 			options,
 			id: create_fragment.name
 		});
@@ -729,300 +821,25 @@ class Path extends SvelteComponentDev {
 		const { ctx } = this.$$;
 		const props = options.props || {};
 
-		if (/*radius*/ ctx[6] === undefined && !("radius" in props)) {
-			console.warn("<Path> was created without expected prop 'radius'");
-		}
-
-		if (/*rotate*/ ctx[7] === undefined && !("rotate" in props)) {
-			console.warn("<Path> was created without expected prop 'rotate'");
-		}
-
-		if (/*value*/ ctx[8] === undefined && !("value" in props)) {
-			console.warn("<Path> was created without expected prop 'value'");
-		}
-
-		if (/*total*/ ctx[9] === undefined && !("total" in props)) {
-			console.warn("<Path> was created without expected prop 'total'");
-		}
-
-		if (/*i*/ ctx[10] === undefined && !("i" in props)) {
-			console.warn("<Path> was created without expected prop 'i'");
+		if (/*slices*/ ctx[0] === undefined && !("slices" in props)) {
+			console.warn("<PieChart> was created without expected prop 'slices'");
 		}
 	}
 
-	get radius() {
-		throw new Error("<Path>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	get slices() {
+		throw new Error("<PieChart>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
-	set radius(value) {
-		throw new Error("<Path>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get rotate() {
-		throw new Error("<Path>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set rotate(value) {
-		throw new Error("<Path>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get value() {
-		throw new Error("<Path>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set value(value) {
-		throw new Error("<Path>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get total() {
-		throw new Error("<Path>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set total(value) {
-		throw new Error("<Path>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	get i() {
-		throw new Error("<Path>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-
-	set i(value) {
-		throw new Error("<Path>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-}
-
-/* src/components/pieChart.svelte generated by Svelte v3.29.4 */
-const file$1 = "src/components/pieChart.svelte";
-
-function get_each_context(ctx, list, i) {
-	const child_ctx = ctx.slice();
-	child_ctx[4] = list[i];
-	child_ctx[6] = i;
-	return child_ctx;
-}
-
-// (21:2) {#each data as value, i}
-function create_each_block(ctx) {
-	let t_value = (/*rotate*/ ctx[0] += 2 * Math.PI * /*value*/ ctx[4] / /*total*/ ctx[2]) + "";
-	let t;
-	let path;
-	let current;
-
-	path = new Path({
-			props: {
-				value: /*value*/ ctx[4],
-				i: /*i*/ ctx[6],
-				total: /*total*/ ctx[2],
-				radius,
-				rotate: /*rotate*/ ctx[0]
-			},
-			$$inline: true
-		});
-
-	const block = {
-		c: function create() {
-			t = text(t_value);
-			create_component(path.$$.fragment);
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, t, anchor);
-			mount_component(path, target, anchor);
-			current = true;
-		},
-		p: function update(ctx, dirty) {
-			if ((!current || dirty & /*rotate*/ 1) && t_value !== (t_value = (/*rotate*/ ctx[0] += 2 * Math.PI * /*value*/ ctx[4] / /*total*/ ctx[2]) + "")) set_data_dev(t, t_value);
-			const path_changes = {};
-			if (dirty & /*rotate*/ 1) path_changes.rotate = /*rotate*/ ctx[0];
-			path.$set(path_changes);
-		},
-		i: function intro(local) {
-			if (current) return;
-			transition_in(path.$$.fragment, local);
-			current = true;
-		},
-		o: function outro(local) {
-			transition_out(path.$$.fragment, local);
-			current = false;
-		},
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(t);
-			destroy_component(path, detaching);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_each_block.name,
-		type: "each",
-		source: "(21:2) {#each data as value, i}",
-		ctx
-	});
-
-	return block;
-}
-
-function create_fragment$1(ctx) {
-	let svg;
-	let svg_viewBox_value;
-	let current;
-	let each_value = /*data*/ ctx[1];
-	validate_each_argument(each_value);
-	let each_blocks = [];
-
-	for (let i = 0; i < each_value.length; i += 1) {
-		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
-	}
-
-	const out = i => transition_out(each_blocks[i], 1, 1, () => {
-		each_blocks[i] = null;
-	});
-
-	const block = {
-		c: function create() {
-			svg = svg_element("svg");
-
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].c();
-			}
-
-			attr_dev(svg, "width", /*diameter*/ ctx[3]);
-			attr_dev(svg, "height", /*diameter*/ ctx[3]);
-			attr_dev(svg, "viewBox", svg_viewBox_value = `0 0 ${/*diameter*/ ctx[3]} ${/*diameter*/ ctx[3]}`);
-			attr_dev(svg, "class", "svelte-x9y65l");
-			add_location(svg, file$1, 19, 0, 362);
-		},
-		l: function claim(nodes) {
-			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, svg, anchor);
-
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].m(svg, null);
-			}
-
-			current = true;
-		},
-		p: function update(ctx, [dirty]) {
-			if (dirty & /*data, total, radius, rotate, Math*/ 7) {
-				each_value = /*data*/ ctx[1];
-				validate_each_argument(each_value);
-				let i;
-
-				for (i = 0; i < each_value.length; i += 1) {
-					const child_ctx = get_each_context(ctx, each_value, i);
-
-					if (each_blocks[i]) {
-						each_blocks[i].p(child_ctx, dirty);
-						transition_in(each_blocks[i], 1);
-					} else {
-						each_blocks[i] = create_each_block(child_ctx);
-						each_blocks[i].c();
-						transition_in(each_blocks[i], 1);
-						each_blocks[i].m(svg, null);
-					}
-				}
-
-				group_outros();
-
-				for (i = each_value.length; i < each_blocks.length; i += 1) {
-					out(i);
-				}
-
-				check_outros();
-			}
-		},
-		i: function intro(local) {
-			if (current) return;
-
-			for (let i = 0; i < each_value.length; i += 1) {
-				transition_in(each_blocks[i]);
-			}
-
-			current = true;
-		},
-		o: function outro(local) {
-			each_blocks = each_blocks.filter(Boolean);
-
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				transition_out(each_blocks[i]);
-			}
-
-			current = false;
-		},
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(svg);
-			destroy_each(each_blocks, detaching);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_fragment$1.name,
-		type: "component",
-		source: "",
-		ctx
-	});
-
-	return block;
-}
-
-const radius = 100;
-
-function instance$1($$self, $$props, $$invalidate) {
-	let { $$slots: slots = {}, $$scope } = $$props;
-	validate_slots("PieChart", slots, []);
-	const data = [6, 2, 1, 8, 10, 4, 5, 2, 7, 8, 12];
-	const total = data.reduce((a, b) => a + b, 0);
-	const diameter = 2 * radius;
-	const writable_props = [];
-
-	Object.keys($$props).forEach(key => {
-		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<PieChart> was created with unknown prop '${key}'`);
-	});
-
-	$$self.$capture_state = () => ({
-		Path,
-		data,
-		radius,
-		total,
-		diameter,
-		rotate
-	});
-
-	$$self.$inject_state = $$props => {
-		if ("rotate" in $$props) $$invalidate(0, rotate = $$props.rotate);
-	};
-
-	let rotate;
-
-	if ($$props && "$$inject" in $$props) {
-		$$self.$inject_state($$props.$$inject);
-	}
-
-	 $$invalidate(0, rotate = 0.5 * Math.PI);
-	return [rotate, data, total, diameter];
-}
-
-class PieChart extends SvelteComponentDev {
-	constructor(options) {
-		super(options);
-		init(this, options, instance$1, create_fragment$1, safe_not_equal, {});
-
-		dispatch_dev("SvelteRegisterComponent", {
-			component: this,
-			tagName: "PieChart",
-			options,
-			id: create_fragment$1.name
-		});
+	set slices(value) {
+		throw new Error("<PieChart>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
 
 /* src/components/button.svelte generated by Svelte v3.29.4 */
 
-const file$2 = "src/components/button.svelte";
+const file$1 = "src/components/button.svelte";
 
-function create_fragment$2(ctx) {
+function create_fragment$1(ctx) {
 	let button;
 	let current;
 	let mounted;
@@ -1035,7 +852,7 @@ function create_fragment$2(ctx) {
 			button = element("button");
 			if (default_slot) default_slot.c();
 			attr_dev(button, "class", "button svelte-13mxyg0");
-			add_location(button, file$2, 30, 0, 552);
+			add_location(button, file$1, 30, 0, 552);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1080,7 +897,7 @@ function create_fragment$2(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$2.name,
+		id: create_fragment$1.name,
 		type: "component",
 		source: "",
 		ctx
@@ -1089,7 +906,7 @@ function create_fragment$2(ctx) {
 	return block;
 }
 
-function instance$2($$self, $$props, $$invalidate) {
+function instance$1($$self, $$props, $$invalidate) {
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("Button", slots, ['default']);
 	const writable_props = [];
@@ -1112,21 +929,21 @@ function instance$2($$self, $$props, $$invalidate) {
 class Button extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$2, create_fragment$2, safe_not_equal, {});
+		init(this, options, instance$1, create_fragment$1, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Button",
 			options,
-			id: create_fragment$2.name
+			id: create_fragment$1.name
 		});
 	}
 }
 
 /* src/Input.svelte generated by Svelte v3.29.4 */
-const file$3 = "src/Input.svelte";
+const file$2 = "src/Input.svelte";
 
-// (103:2) {:else}
+// (95:2) {:else}
 function create_else_block(ctx) {
 	let div;
 	let t_value = (/*accountName*/ ctx[3] || "") + "";
@@ -1138,8 +955,8 @@ function create_else_block(ctx) {
 		c: function create() {
 			div = element("div");
 			t = text(t_value);
-			attr_dev(div, "class", "accountName svelte-17f3dl6");
-			add_location(div, file$3, 103, 4, 2041);
+			attr_dev(div, "class", "accountName svelte-o07wqg");
+			add_location(div, file$2, 95, 4, 2068);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -1164,14 +981,14 @@ function create_else_block(ctx) {
 		block,
 		id: create_else_block.name,
 		type: "else",
-		source: "(103:2) {:else}",
+		source: "(95:2) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (92:2) {#if isInputNameVisible}
+// (84:2) {#if isInputNameVisible}
 function create_if_block(ctx) {
 	let div;
 	let input;
@@ -1182,13 +999,13 @@ function create_if_block(ctx) {
 		c: function create() {
 			div = element("div");
 			input = element("input");
-			attr_dev(input, "class", "input accountName svelte-17f3dl6");
+			attr_dev(input, "class", "input accountName svelte-o07wqg");
 			attr_dev(input, "type", "text");
 			attr_dev(input, "placeholder", "название");
 			attr_dev(input, "name", "accountName");
-			add_location(input, file$3, 93, 6, 1765);
-			attr_dev(div, "class", "field svelte-17f3dl6");
-			add_location(div, file$3, 92, 4, 1739);
+			add_location(input, file$2, 85, 6, 1792);
+			attr_dev(div, "class", "field svelte-o07wqg");
+			add_location(div, file$2, 84, 4, 1766);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -1222,14 +1039,14 @@ function create_if_block(ctx) {
 		block,
 		id: create_if_block.name,
 		type: "if",
-		source: "(92:2) {#if isInputNameVisible}",
+		source: "(84:2) {#if isInputNameVisible}",
 		ctx
 	});
 
 	return block;
 }
 
-// (121:2) <Button on:click={handleDelete}>
+// (113:2) <Button on:click={handleDelete}>
 function create_default_slot(ctx) {
 	let t;
 
@@ -1249,14 +1066,14 @@ function create_default_slot(ctx) {
 		block,
 		id: create_default_slot.name,
 		type: "slot",
-		source: "(121:2) <Button on:click={handleDelete}>",
+		source: "(113:2) <Button on:click={handleDelete}>",
 		ctx
 	});
 
 	return block;
 }
 
-function create_fragment$3(ctx) {
+function create_fragment$2(ctx) {
 	let div1;
 	let t0;
 	let div0;
@@ -1309,28 +1126,28 @@ function create_fragment$3(ctx) {
 			option2.textContent = "Рубли";
 			t5 = space();
 			create_component(button.$$.fragment);
-			attr_dev(input, "class", "input svelte-17f3dl6");
+			attr_dev(input, "class", "input svelte-o07wqg");
 			attr_dev(input, "type", "number");
 			attr_dev(input, "placeholder", "cумма");
 			attr_dev(input, "name", input_name_value = `${/*id*/ ctx[0]}Amount`);
-			add_location(input, file$3, 108, 4, 2167);
+			add_location(input, file$2, 100, 4, 2194);
 			option0.__value = "USD";
 			option0.value = option0.__value;
-			add_location(option0, file$3, 115, 6, 2385);
+			add_location(option0, file$2, 107, 6, 2412);
 			option1.__value = "EUR";
 			option1.value = option1.__value;
-			add_location(option1, file$3, 116, 6, 2427);
+			add_location(option1, file$2, 108, 6, 2454);
 			option2.__value = "RUB";
 			option2.value = option2.__value;
-			add_location(option2, file$3, 117, 6, 2467);
-			attr_dev(select, "class", "select svelte-17f3dl6");
+			add_location(option2, file$2, 109, 6, 2494);
+			attr_dev(select, "class", "select svelte-o07wqg");
 			attr_dev(select, "name", select_name_value = `${/*id*/ ctx[0]}Currency`);
 			if (/*currencyValue*/ ctx[5] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[15].call(select));
-			add_location(select, file$3, 114, 4, 2305);
-			attr_dev(div0, "class", "field svelte-17f3dl6");
-			add_location(div0, file$3, 107, 2, 2143);
-			attr_dev(div1, "class", "container svelte-17f3dl6");
-			add_location(div1, file$3, 90, 0, 1684);
+			add_location(select, file$2, 106, 4, 2332);
+			attr_dev(div0, "class", "field svelte-o07wqg");
+			add_location(div0, file$2, 99, 2, 2170);
+			attr_dev(div1, "class", "container svelte-o07wqg");
+			add_location(div1, file$2, 82, 0, 1711);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1418,7 +1235,7 @@ function create_fragment$3(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$3.name,
+		id: create_fragment$2.name,
 		type: "component",
 		source: "",
 		ctx
@@ -1427,9 +1244,10 @@ function create_fragment$3(ctx) {
 	return block;
 }
 
-function instance$3($$self, $$props, $$invalidate) {
+function instance$2($$self, $$props, $$invalidate) {
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("Input", slots, []);
+	
 	let { name } = $$props;
 	let { amount } = $$props;
 	let { currency } = $$props;
@@ -1578,13 +1396,13 @@ function instance$3($$self, $$props, $$invalidate) {
 class Input extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$3, create_fragment$3, safe_not_equal, { name: 8, amount: 9, currency: 10, id: 0 });
+		init(this, options, instance$2, create_fragment$2, safe_not_equal, { name: 8, amount: 9, currency: 10, id: 0 });
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Input",
 			options,
-			id: create_fragment$3.name
+			id: create_fragment$2.name
 		});
 
 		const { ctx } = this.$$;
@@ -1636,10 +1454,31 @@ class Input extends SvelteComponentDev {
 	}
 }
 
-/* src/components/money.svelte generated by Svelte v3.29.4 */
-const file$4 = "src/components/money.svelte";
+function round(value, withK) {
+    if (withK) {
+        return `${Math.round(value / 1000)}k`;
+    }
+    return Math.round(value * 100) / 100;
+}
+function parseDate() {
+    const currentDate = new Date();
+    const day = currentDate.getDate().toString().padStart(2, "0");
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+    const year = currentDate.getFullYear();
+    return `${day}-${month}-${year}`;
+}
+function getCurrencySymbol(currency) {
+    return {
+        EUR: "€",
+        USD: "$",
+        RUB: "₽",
+    }[currency || "RUB"];
+}
 
-function create_fragment$4(ctx) {
+/* src/components/money.svelte generated by Svelte v3.29.4 */
+const file$3 = "src/components/money.svelte";
+
+function create_fragment$3(ctx) {
 	let span;
 	let t0_value = round(/*amount*/ ctx[0], /*withK*/ ctx[2]) + "";
 	let t0;
@@ -1654,7 +1493,7 @@ function create_fragment$4(ctx) {
 			t1 = space();
 			t2 = text(t2_value);
 			attr_dev(span, "class", "sum svelte-pc0dcg");
-			add_location(span, file$4, 14, 0, 215);
+			add_location(span, file$3, 13, 0, 249);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1678,7 +1517,7 @@ function create_fragment$4(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$4.name,
+		id: create_fragment$3.name,
 		type: "component",
 		source: "",
 		ctx
@@ -1687,10 +1526,11 @@ function create_fragment$4(ctx) {
 	return block;
 }
 
-function instance$4($$self, $$props, $$invalidate) {
+function instance$3($$self, $$props, $$invalidate) {
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("Money", slots, []);
-	let { amount = "Mistake" } = $$props;
+	
+	let { amount = 0 } = $$props;
 	let { currency } = $$props;
 	let { withK = false } = $$props;
 	const writable_props = ["amount", "currency", "withK"];
@@ -1729,13 +1569,13 @@ function instance$4($$self, $$props, $$invalidate) {
 class Money extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$4, create_fragment$4, safe_not_equal, { amount: 0, currency: 1, withK: 2 });
+		init(this, options, instance$3, create_fragment$3, safe_not_equal, { amount: 0, currency: 1, withK: 2 });
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Money",
 			options,
-			id: create_fragment$4.name
+			id: create_fragment$3.name
 		});
 
 		const { ctx } = this.$$;
@@ -1772,9 +1612,9 @@ class Money extends SvelteComponentDev {
 }
 
 /* src/components/savingHistory/savingHistoryItem.svelte generated by Svelte v3.29.4 */
-const file$5 = "src/components/savingHistory/savingHistoryItem.svelte";
+const file$4 = "src/components/savingHistory/savingHistoryItem.svelte";
 
-function create_fragment$5(ctx) {
+function create_fragment$4(ctx) {
 	let div;
 	let span0;
 	let t0_value = /*item*/ ctx[0].date + "";
@@ -1796,7 +1636,7 @@ function create_fragment$5(ctx) {
 
 	money1 = new Money({
 			props: {
-				amount: /*diffAmount*/ ctx[1],
+				amount: Number(/*diffAmount*/ ctx[1]),
 				currency: "RUB",
 				withK: true
 			},
@@ -1808,18 +1648,18 @@ function create_fragment$5(ctx) {
 			div = element("div");
 			span0 = element("span");
 			t0 = text(t0_value);
-			t1 = text(":\n    ");
+			t1 = text(":\n\n    ");
 			create_component(money0.$$.fragment);
 			t2 = space();
 			span1 = element("span");
 			create_component(money1.$$.fragment);
-			add_location(span0, file$5, 35, 2, 713);
+			add_location(span0, file$4, 34, 2, 763);
 			attr_dev(span1, "class", "diff svelte-1kaa4u7");
 			toggle_class(span1, "green", /*diffAmount*/ ctx[1] >= 0);
 			toggle_class(span1, "red", /*diffAmount*/ ctx[1] < 0);
-			add_location(span1, file$5, 39, 2, 796);
+			add_location(span1, file$4, 39, 2, 847);
 			attr_dev(div, "class", "sum svelte-1kaa4u7");
-			add_location(div, file$5, 34, 0, 693);
+			add_location(div, file$4, 33, 0, 743);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1841,7 +1681,7 @@ function create_fragment$5(ctx) {
 			if (dirty & /*item*/ 1) money0_changes.amount = /*item*/ ctx[0].RUB;
 			money0.$set(money0_changes);
 			const money1_changes = {};
-			if (dirty & /*diffAmount*/ 2) money1_changes.amount = /*diffAmount*/ ctx[1];
+			if (dirty & /*diffAmount*/ 2) money1_changes.amount = Number(/*diffAmount*/ ctx[1]);
 			money1.$set(money1_changes);
 
 			if (dirty & /*diffAmount*/ 2) {
@@ -1872,7 +1712,7 @@ function create_fragment$5(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$5.name,
+		id: create_fragment$4.name,
 		type: "component",
 		source: "",
 		ctx
@@ -1881,9 +1721,10 @@ function create_fragment$5(ctx) {
 	return block;
 }
 
-function instance$5($$self, $$props, $$invalidate) {
+function instance$4($$self, $$props, $$invalidate) {
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("SavingHistoryItem", slots, []);
+	
 	let { item } = $$props;
 	let { prevItem } = $$props;
 	const prevAmount = prevItem ? prevItem.RUB : 0;
@@ -1931,13 +1772,13 @@ function instance$5($$self, $$props, $$invalidate) {
 class SavingHistoryItem extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$5, create_fragment$5, safe_not_equal, { item: 0, prevItem: 2 });
+		init(this, options, instance$4, create_fragment$4, safe_not_equal, { item: 0, prevItem: 2 });
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "SavingHistoryItem",
 			options,
-			id: create_fragment$5.name
+			id: create_fragment$4.name
 		});
 
 		const { ctx } = this.$$;
@@ -1966,200 +1807,6 @@ class SavingHistoryItem extends SvelteComponentDev {
 
 	set prevItem(value) {
 		throw new Error("<SavingHistoryItem>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-	}
-}
-
-/* src/components/savingHistory/savingHistory.svelte generated by Svelte v3.29.4 */
-const file$6 = "src/components/savingHistory/savingHistory.svelte";
-
-function get_each_context$1(ctx, list, i) {
-	const child_ctx = ctx.slice();
-	child_ctx[1] = list[i];
-	child_ctx[3] = i;
-	return child_ctx;
-}
-
-// (14:2) {#each $savingsHistory as item, index}
-function create_each_block$1(ctx) {
-	let item;
-	let current;
-
-	item = new SavingHistoryItem({
-			props: {
-				item: /*item*/ ctx[1],
-				prevItem: /*$savingsHistory*/ ctx[0][/*index*/ ctx[3] - 1]
-			},
-			$$inline: true
-		});
-
-	const block = {
-		c: function create() {
-			create_component(item.$$.fragment);
-		},
-		m: function mount(target, anchor) {
-			mount_component(item, target, anchor);
-			current = true;
-		},
-		p: function update(ctx, dirty) {
-			const item_changes = {};
-			if (dirty & /*$savingsHistory*/ 1) item_changes.item = /*item*/ ctx[1];
-			if (dirty & /*$savingsHistory*/ 1) item_changes.prevItem = /*$savingsHistory*/ ctx[0][/*index*/ ctx[3] - 1];
-			item.$set(item_changes);
-		},
-		i: function intro(local) {
-			if (current) return;
-			transition_in(item.$$.fragment, local);
-			current = true;
-		},
-		o: function outro(local) {
-			transition_out(item.$$.fragment, local);
-			current = false;
-		},
-		d: function destroy(detaching) {
-			destroy_component(item, detaching);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_each_block$1.name,
-		type: "each",
-		source: "(14:2) {#each $savingsHistory as item, index}",
-		ctx
-	});
-
-	return block;
-}
-
-function create_fragment$6(ctx) {
-	let div;
-	let current;
-	let each_value = /*$savingsHistory*/ ctx[0];
-	validate_each_argument(each_value);
-	let each_blocks = [];
-
-	for (let i = 0; i < each_value.length; i += 1) {
-		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
-	}
-
-	const out = i => transition_out(each_blocks[i], 1, 1, () => {
-		each_blocks[i] = null;
-	});
-
-	const block = {
-		c: function create() {
-			div = element("div");
-
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].c();
-			}
-
-			attr_dev(div, "class", "container svelte-fcdr2j");
-			add_location(div, file$6, 12, 0, 199);
-		},
-		l: function claim(nodes) {
-			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, div, anchor);
-
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].m(div, null);
-			}
-
-			current = true;
-		},
-		p: function update(ctx, [dirty]) {
-			if (dirty & /*$savingsHistory*/ 1) {
-				each_value = /*$savingsHistory*/ ctx[0];
-				validate_each_argument(each_value);
-				let i;
-
-				for (i = 0; i < each_value.length; i += 1) {
-					const child_ctx = get_each_context$1(ctx, each_value, i);
-
-					if (each_blocks[i]) {
-						each_blocks[i].p(child_ctx, dirty);
-						transition_in(each_blocks[i], 1);
-					} else {
-						each_blocks[i] = create_each_block$1(child_ctx);
-						each_blocks[i].c();
-						transition_in(each_blocks[i], 1);
-						each_blocks[i].m(div, null);
-					}
-				}
-
-				group_outros();
-
-				for (i = each_value.length; i < each_blocks.length; i += 1) {
-					out(i);
-				}
-
-				check_outros();
-			}
-		},
-		i: function intro(local) {
-			if (current) return;
-
-			for (let i = 0; i < each_value.length; i += 1) {
-				transition_in(each_blocks[i]);
-			}
-
-			current = true;
-		},
-		o: function outro(local) {
-			each_blocks = each_blocks.filter(Boolean);
-
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				transition_out(each_blocks[i]);
-			}
-
-			current = false;
-		},
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(div);
-			destroy_each(each_blocks, detaching);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_fragment$6.name,
-		type: "component",
-		source: "",
-		ctx
-	});
-
-	return block;
-}
-
-function instance$6($$self, $$props, $$invalidate) {
-	let $savingsHistory;
-	validate_store(savingsHistory, "savingsHistory");
-	component_subscribe($$self, savingsHistory, $$value => $$invalidate(0, $savingsHistory = $$value));
-	let { $$slots: slots = {}, $$scope } = $$props;
-	validate_slots("SavingHistory", slots, []);
-	const writable_props = [];
-
-	Object.keys($$props).forEach(key => {
-		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<SavingHistory> was created with unknown prop '${key}'`);
-	});
-
-	$$self.$capture_state = () => ({ savingsHistory, Item: SavingHistoryItem, $savingsHistory });
-	return [$savingsHistory];
-}
-
-class SavingHistory extends SvelteComponentDev {
-	constructor(options) {
-		super(options);
-		init(this, options, instance$6, create_fragment$6, safe_not_equal, {});
-
-		dispatch_dev("SvelteRegisterComponent", {
-			component: this,
-			tagName: "SavingHistory",
-			options,
-			id: create_fragment$6.name
-		});
 	}
 }
 
@@ -2192,9 +1839,9 @@ function formateDate(value, type) {
 /* src/components/diagram.svelte generated by Svelte v3.29.4 */
 
 const { Object: Object_1 } = globals;
-const file$7 = "src/components/diagram.svelte";
+const file$5 = "src/components/diagram.svelte";
 
-function get_each_context$2(ctx, list, i) {
+function get_each_context$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
 	child_ctx[47] = list[i];
 	child_ctx[49] = i;
@@ -2214,7 +1861,7 @@ function create_if_block$1(ctx) {
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value.length; i += 1) {
-		each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
 	}
 
 	const block = {
@@ -2230,13 +1877,13 @@ function create_if_block$1(ctx) {
 			}
 
 			attr_dev(p, "class", "date svelte-vkvvsm");
-			add_location(p, file$7, 316, 8, 7016);
+			add_location(p, file$5, 316, 8, 7016);
 			attr_dev(section, "class", "info");
-			add_location(section, file$7, 317, 8, 7059);
+			add_location(section, file$5, 317, 8, 7059);
 			attr_dev(div, "class", "tooltip tooltip--light svelte-vkvvsm");
 			set_style(div, "top", "10px");
 			set_style(div, "left", /*tooltip*/ ctx[4].x - 65 + "px");
-			add_location(div, file$7, 313, 6, 6911);
+			add_location(div, file$5, 313, 6, 6911);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -2258,12 +1905,12 @@ function create_if_block$1(ctx) {
 				let i;
 
 				for (i = 0; i < each_value.length; i += 1) {
-					const child_ctx = get_each_context$2(ctx, each_value, i);
+					const child_ctx = get_each_context$1(ctx, each_value, i);
 
 					if (each_blocks[i]) {
 						each_blocks[i].p(child_ctx, dirty);
 					} else {
-						each_blocks[i] = create_each_block$2(child_ctx);
+						each_blocks[i] = create_each_block$1(child_ctx);
 						each_blocks[i].c();
 						each_blocks[i].m(section, null);
 					}
@@ -2298,7 +1945,7 @@ function create_if_block$1(ctx) {
 }
 
 // (319:10) {#each tooltip.views as views, i}
-function create_each_block$2(ctx) {
+function create_each_block$1(ctx) {
 	let div;
 	let t0_value = Object.keys(/*yData*/ ctx[0])[/*i*/ ctx[49]] + "";
 	let t0;
@@ -2316,10 +1963,10 @@ function create_each_block$2(ctx) {
 			span = element("span");
 			t2 = text(t2_value);
 			t3 = space();
-			add_location(span, file$7, 321, 14, 7238);
+			add_location(span, file$5, 321, 14, 7238);
 			attr_dev(div, "class", "views svelte-vkvvsm");
 			set_style(div, "color", /*colors*/ ctx[1][/*i*/ ctx[49]]);
-			add_location(div, file$7, 319, 12, 7138);
+			add_location(div, file$5, 319, 12, 7138);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -2344,7 +1991,7 @@ function create_each_block$2(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_each_block$2.name,
+		id: create_each_block$1.name,
 		type: "each",
 		source: "(319:10) {#each tooltip.views as views, i}",
 		ctx
@@ -2353,7 +2000,7 @@ function create_each_block$2(ctx) {
 	return block;
 }
 
-function create_fragment$7(ctx) {
+function create_fragment$5(ctx) {
 	let div1;
 	let div0;
 	let canvas;
@@ -2374,16 +2021,16 @@ function create_fragment$7(ctx) {
 			attr_dev(canvas, "width", /*widthCanvas*/ ctx[7]);
 			attr_dev(canvas, "height", "504px");
 			set_style(canvas, "transform", "translateX(" + /*currentPositionX*/ ctx[5] + "px)");
-			add_location(canvas, file$7, 304, 4, 6684);
+			add_location(canvas, file$5, 304, 4, 6684);
 			attr_dev(div0, "class", "chart svelte-vkvvsm");
 
 			attr_dev(div0, "style", div0_style_value = /*isMouseDown*/ ctx[6]
 			? "cursor: grabbing"
 			: "cursor: grab");
 
-			add_location(div0, file$7, 296, 2, 6417);
+			add_location(div0, file$5, 296, 2, 6417);
 			attr_dev(div1, "class", "chart-two svelte-vkvvsm");
-			add_location(div1, file$7, 295, 0, 6391);
+			add_location(div1, file$5, 295, 0, 6391);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2447,7 +2094,7 @@ function create_fragment$7(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$7.name,
+		id: create_fragment$5.name,
 		type: "component",
 		source: "",
 		ctx
@@ -2456,7 +2103,7 @@ function create_fragment$7(ctx) {
 	return block;
 }
 
-function instance$7($$self, $$props, $$invalidate) {
+function instance$5($$self, $$props, $$invalidate) {
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("Diagram", slots, []);
 	let canvasRef;
@@ -2832,13 +2479,13 @@ function instance$7($$self, $$props, $$invalidate) {
 class Diagram extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$7, create_fragment$7, safe_not_equal, { xData: 12, yData: 0, colors: 1 }, [-1, -1]);
+		init(this, options, instance$5, create_fragment$5, safe_not_equal, { xData: 12, yData: 0, colors: 1 }, [-1, -1]);
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "Diagram",
 			options,
-			id: create_fragment$7.name
+			id: create_fragment$5.name
 		});
 
 		const { ctx } = this.$$;
@@ -2882,18 +2529,242 @@ class Diagram extends SvelteComponentDev {
 	}
 }
 
-/* src/App.svelte generated by Svelte v3.29.4 */
+/* src/components/savingHistory/savingHistory.svelte generated by Svelte v3.29.4 */
+const file$6 = "src/components/savingHistory/savingHistory.svelte";
 
-const { Object: Object_1$1, console: console_1 } = globals;
-const file$8 = "src/App.svelte";
-
-function get_each_context$3(ctx, list, i) {
+function get_each_context$2(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[11] = list[i];
+	child_ctx[3] = list[i];
+	child_ctx[5] = i;
 	return child_ctx;
 }
 
-// (78:2) {#if $status === STATUS.loading}
+// (22:2) {#each $savingsHistory as item, index}
+function create_each_block$2(ctx) {
+	let item;
+	let current;
+
+	item = new SavingHistoryItem({
+			props: {
+				item: /*item*/ ctx[3],
+				prevItem: /*$savingsHistory*/ ctx[0][/*index*/ ctx[5] - 1]
+			},
+			$$inline: true
+		});
+
+	const block = {
+		c: function create() {
+			create_component(item.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(item, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const item_changes = {};
+			if (dirty & /*$savingsHistory*/ 1) item_changes.item = /*item*/ ctx[3];
+			if (dirty & /*$savingsHistory*/ 1) item_changes.prevItem = /*$savingsHistory*/ ctx[0][/*index*/ ctx[5] - 1];
+			item.$set(item_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(item.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(item.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(item, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block$2.name,
+		type: "each",
+		source: "(22:2) {#each $savingsHistory as item, index}",
+		ctx
+	});
+
+	return block;
+}
+
+function create_fragment$6(ctx) {
+	let div;
+	let current;
+	let each_value = /*$savingsHistory*/ ctx[0];
+	validate_each_argument(each_value);
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+	}
+
+	const out = i => transition_out(each_blocks[i], 1, 1, () => {
+		each_blocks[i] = null;
+	});
+
+	const block = {
+		c: function create() {
+			div = element("div");
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			attr_dev(div, "class", "container svelte-fcdr2j");
+			add_location(div, file$6, 20, 0, 425);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(div, null);
+			}
+
+			current = true;
+		},
+		p: function update(ctx, [dirty]) {
+			if (dirty & /*$savingsHistory*/ 1) {
+				each_value = /*$savingsHistory*/ ctx[0];
+				validate_each_argument(each_value);
+				let i;
+
+				for (i = 0; i < each_value.length; i += 1) {
+					const child_ctx = get_each_context$2(ctx, each_value, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+						transition_in(each_blocks[i], 1);
+					} else {
+						each_blocks[i] = create_each_block$2(child_ctx);
+						each_blocks[i].c();
+						transition_in(each_blocks[i], 1);
+						each_blocks[i].m(div, null);
+					}
+				}
+
+				group_outros();
+
+				for (i = each_value.length; i < each_blocks.length; i += 1) {
+					out(i);
+				}
+
+				check_outros();
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+
+			for (let i = 0; i < each_value.length; i += 1) {
+				transition_in(each_blocks[i]);
+			}
+
+			current = true;
+		},
+		o: function outro(local) {
+			each_blocks = each_blocks.filter(Boolean);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				transition_out(each_blocks[i]);
+			}
+
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			destroy_each(each_blocks, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$6.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance$6($$self, $$props, $$invalidate) {
+	let $savingsHistory;
+	validate_store(savingsHistory, "savingsHistory");
+	component_subscribe($$self, savingsHistory, $$value => $$invalidate(0, $savingsHistory = $$value));
+	let { $$slots: slots = {}, $$scope } = $$props;
+	validate_slots("SavingHistory", slots, []);
+	let yData = [];
+	let xData = [];
+	const writable_props = [];
+
+	Object.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<SavingHistory> was created with unknown prop '${key}'`);
+	});
+
+	$$self.$capture_state = () => ({
+		savingsHistory,
+		Item: SavingHistoryItem,
+		data,
+		Diagram,
+		yData,
+		xData,
+		$savingsHistory
+	});
+
+	$$self.$inject_state = $$props => {
+		if ("yData" in $$props) yData = $$props.yData;
+		if ("xData" in $$props) xData = $$props.xData;
+	};
+
+	if ($$props && "$$inject" in $$props) {
+		$$self.$inject_state($$props.$$inject);
+	}
+
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty & /*$savingsHistory*/ 1) {
+			 yData = $savingsHistory.map(item => item.RUB);
+		}
+
+		if ($$self.$$.dirty & /*$savingsHistory*/ 1) {
+			 xData = $savingsHistory.map(item => item.date);
+		}
+	};
+
+	return [$savingsHistory];
+}
+
+class SavingHistory extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance$6, create_fragment$6, safe_not_equal, {});
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "SavingHistory",
+			options,
+			id: create_fragment$6.name
+		});
+	}
+}
+
+/* src/App.svelte generated by Svelte v3.29.4 */
+
+const { Object: Object_1$1 } = globals;
+const file$7 = "src/App.svelte";
+
+function get_each_context$3(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[12] = list[i];
+	return child_ctx;
+}
+
+// (73:2) {#if $status === STATUS.loading}
 function create_if_block_2(ctx) {
 	let t;
 
@@ -2913,26 +2784,26 @@ function create_if_block_2(ctx) {
 		block,
 		id: create_if_block_2.name,
 		type: "if",
-		source: "(78:2) {#if $status === STATUS.loading}",
+		source: "(73:2) {#if $status === STATUS.loading}",
 		ctx
 	});
 
 	return block;
 }
 
-// (79:2) {#if $status === STATUS.failed}
+// (74:2) {#if $status === STATUS.failed}
 function create_if_block_1(ctx) {
 	let t;
 
 	const block = {
 		c: function create() {
-			t = text(/*$error*/ ctx[3]);
+			t = text(/*$error*/ ctx[5]);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, t, anchor);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty & /*$error*/ 8) set_data_dev(t, /*$error*/ ctx[3]);
+			if (dirty & /*$error*/ 32) set_data_dev(t, /*$error*/ ctx[5]);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(t);
@@ -2943,14 +2814,14 @@ function create_if_block_1(ctx) {
 		block,
 		id: create_if_block_1.name,
 		type: "if",
-		source: "(79:2) {#if $status === STATUS.failed}",
+		source: "(74:2) {#if $status === STATUS.failed}",
 		ctx
 	});
 
 	return block;
 }
 
-// (80:2) {#if $status === STATUS.loaded}
+// (75:2) {#if $status === STATUS.loaded}
 function create_if_block$2(ctx) {
 	let div;
 	let t0;
@@ -2961,7 +2832,7 @@ function create_if_block$2(ctx) {
 
 	money0 = new Money({
 			props: {
-				amount: /*$rates*/ ctx[4].USD,
+				amount: /*$rates*/ ctx[6].USD,
 				currency: "USD"
 			},
 			$$inline: true
@@ -2969,7 +2840,7 @@ function create_if_block$2(ctx) {
 
 	money1 = new Money({
 			props: {
-				amount: /*$rates*/ ctx[4].EUR,
+				amount: /*$rates*/ ctx[6].EUR,
 				currency: "EUR"
 			},
 			$$inline: true
@@ -2982,8 +2853,8 @@ function create_if_block$2(ctx) {
 			create_component(money0.$$.fragment);
 			t1 = text("\n      Евро:\n      ");
 			create_component(money1.$$.fragment);
-			attr_dev(div, "class", "currentRates svelte-1520mhv");
-			add_location(div, file$8, 80, 4, 1606);
+			attr_dev(div, "class", "currentRates svelte-114oegv");
+			add_location(div, file$7, 75, 4, 1801);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -2995,10 +2866,10 @@ function create_if_block$2(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const money0_changes = {};
-			if (dirty & /*$rates*/ 16) money0_changes.amount = /*$rates*/ ctx[4].USD;
+			if (dirty & /*$rates*/ 64) money0_changes.amount = /*$rates*/ ctx[6].USD;
 			money0.$set(money0_changes);
 			const money1_changes = {};
-			if (dirty & /*$rates*/ 16) money1_changes.amount = /*$rates*/ ctx[4].EUR;
+			if (dirty & /*$rates*/ 64) money1_changes.amount = /*$rates*/ ctx[6].EUR;
 			money1.$set(money1_changes);
 		},
 		i: function intro(local) {
@@ -3023,30 +2894,30 @@ function create_if_block$2(ctx) {
 		block,
 		id: create_if_block$2.name,
 		type: "if",
-		source: "(80:2) {#if $status === STATUS.loaded}",
+		source: "(75:2) {#if $status === STATUS.loaded}",
 		ctx
 	});
 
 	return block;
 }
 
-// (90:6) {#each financeKeys as key}
+// (85:6) {#each financeKeys as key}
 function create_each_block$3(ctx) {
 	let input;
 	let current;
 
 	input = new Input({
 			props: {
-				id: /*key*/ ctx[11],
-				name: /*$finance*/ ctx[1][/*key*/ ctx[11]].name,
-				amount: /*$finance*/ ctx[1][/*key*/ ctx[11]].amount,
-				currency: /*$finance*/ ctx[1][/*key*/ ctx[11]].currency
+				id: /*key*/ ctx[12],
+				name: /*$finance*/ ctx[2][/*key*/ ctx[12]].name,
+				amount: /*$finance*/ ctx[2][/*key*/ ctx[12]].amount,
+				currency: /*$finance*/ ctx[2][/*key*/ ctx[12]].currency
 			},
 			$$inline: true
 		});
 
-	input.$on("message", /*handleChange*/ ctx[7]);
-	input.$on("delete", /*handleDelete*/ ctx[8]);
+	input.$on("message", /*handleChange*/ ctx[9]);
+	input.$on("delete", /*handleDelete*/ ctx[10]);
 
 	const block = {
 		c: function create() {
@@ -3058,10 +2929,10 @@ function create_each_block$3(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const input_changes = {};
-			if (dirty & /*financeKeys*/ 1) input_changes.id = /*key*/ ctx[11];
-			if (dirty & /*$finance, financeKeys*/ 3) input_changes.name = /*$finance*/ ctx[1][/*key*/ ctx[11]].name;
-			if (dirty & /*$finance, financeKeys*/ 3) input_changes.amount = /*$finance*/ ctx[1][/*key*/ ctx[11]].amount;
-			if (dirty & /*$finance, financeKeys*/ 3) input_changes.currency = /*$finance*/ ctx[1][/*key*/ ctx[11]].currency;
+			if (dirty & /*financeKeys*/ 2) input_changes.id = /*key*/ ctx[12];
+			if (dirty & /*$finance, financeKeys*/ 6) input_changes.name = /*$finance*/ ctx[2][/*key*/ ctx[12]].name;
+			if (dirty & /*$finance, financeKeys*/ 6) input_changes.amount = /*$finance*/ ctx[2][/*key*/ ctx[12]].amount;
+			if (dirty & /*$finance, financeKeys*/ 6) input_changes.currency = /*$finance*/ ctx[2][/*key*/ ctx[12]].currency;
 			input.$set(input_changes);
 		},
 		i: function intro(local) {
@@ -3082,14 +2953,14 @@ function create_each_block$3(ctx) {
 		block,
 		id: create_each_block$3.name,
 		type: "each",
-		source: "(90:6) {#each financeKeys as key}",
+		source: "(85:6) {#each financeKeys as key}",
 		ctx
 	});
 
 	return block;
 }
 
-// (99:6) <Button on:click={add}>
+// (94:6) <Button on:click={add}>
 function create_default_slot$1(ctx) {
 	let t;
 
@@ -3109,15 +2980,15 @@ function create_default_slot$1(ctx) {
 		block,
 		id: create_default_slot$1.name,
 		type: "slot",
-		source: "(99:6) <Button on:click={add}>",
+		source: "(94:6) <Button on:click={add}>",
 		ctx
 	});
 
 	return block;
 }
 
-function create_fragment$8(ctx) {
-	let div6;
+function create_fragment$7(ctx) {
+	let div11;
 	let t0;
 	let t1;
 	let t2;
@@ -3128,43 +2999,49 @@ function create_fragment$8(ctx) {
 	let t4;
 	let savinghistory;
 	let t5;
-	let div5;
-	let t6;
+	let div10;
+	let div4;
 	let div1;
 	let money0;
+	let t6;
 	let t7;
 	let div2;
 	let money1;
 	let t8;
+	let t9;
 	let div3;
 	let money2;
-	let t9;
-	let div4;
-	let t10_value = getCurrencySymbol("RUB") + "";
 	let t10;
 	let t11;
-	let t12_value = /*$totalRation*/ ctx[6].RUB + "";
+	let div9;
+	let div8;
+	let div5;
+	let money3;
 	let t12;
+	let t13_value = /*$totalRatio*/ ctx[3].RUB + "";
 	let t13;
-	let t14_value = getCurrencySymbol("EUR") + "";
 	let t14;
 	let t15;
-	let t16_value = /*$totalRation*/ ctx[6].EUR + "";
+	let div6;
+	let money4;
 	let t16;
+	let t17_value = /*$totalRatio*/ ctx[3].USD + "";
 	let t17;
-	let t18_value = getCurrencySymbol("USD") + "";
 	let t18;
 	let t19;
-	let t20_value = /*$totalRation*/ ctx[6].USD + "";
+	let div7;
+	let money5;
 	let t20;
+	let t21_value = /*$totalRatio*/ ctx[3].EUR + "";
 	let t21;
 	let t22;
+	let t23;
 	let piechart;
 	let current;
-	let if_block0 = /*$status*/ ctx[2] === STATUS.loading && create_if_block_2(ctx);
-	let if_block1 = /*$status*/ ctx[2] === STATUS.failed && create_if_block_1(ctx);
-	let if_block2 = /*$status*/ ctx[2] === STATUS.loaded && create_if_block$2(ctx);
-	let each_value = /*financeKeys*/ ctx[0];
+	let if_block0 = /*$status*/ ctx[4] === STATUS.loading && create_if_block_2(ctx);
+	let if_block1 = /*$status*/ ctx[4] === STATUS.failed && create_if_block_1(ctx);
+	let if_block2 = /*$status*/ ctx[4] === STATUS.loaded && create_if_block$2(ctx);
+	let each_value = /*financeKeys*/ ctx[1];
 	validate_each_argument(each_value);
 	let each_blocks = [];
 
@@ -3184,12 +3061,12 @@ function create_fragment$8(ctx) {
 			$$inline: true
 		});
 
-	button.$on("click", /*add*/ ctx[9]);
+	button.$on("click", /*add*/ ctx[11]);
 	savinghistory = new SavingHistory({ $$inline: true });
 
 	money0 = new Money({
 			props: {
-				amount: /*$totalSaving*/ ctx[5].RUB,
+				amount: /*$totalSaving*/ ctx[7].RUB,
 				currency: "RUB"
 			},
 			$$inline: true
@@ -3197,7 +3074,7 @@ function create_fragment$8(ctx) {
 
 	money1 = new Money({
 			props: {
-				amount: /*$totalSaving*/ ctx[5].USD,
+				amount: /*$totalSaving*/ ctx[7].USD,
 				currency: "USD"
 			},
 			$$inline: true
@@ -3205,17 +3082,44 @@ function create_fragment$8(ctx) {
 
 	money2 = new Money({
 			props: {
-				amount: /*$totalSaving*/ ctx[5].EUR,
+				amount: /*$totalSaving*/ ctx[7].EUR,
 				currency: "EUR"
 			},
 			$$inline: true
 		});
 
-	piechart = new PieChart({ $$inline: true });
+	money3 = new Money({
+			props: {
+				amount: /*$separateCurrencyTotal*/ ctx[8].RUB,
+				currency: "RUB"
+			},
+			$$inline: true
+		});
+
+	money4 = new Money({
+			props: {
+				amount: /*$separateCurrencyTotal*/ ctx[8].USD,
+				currency: "USD"
+			},
+			$$inline: true
+		});
+
+	money5 = new Money({
+			props: {
+				amount: /*$separateCurrencyTotal*/ ctx[8].EUR,
+				currency: "EUR"
+			},
+			$$inline: true
+		});
+
+	piechart = new PieChart({
+			props: { slices: /*slices*/ ctx[0] },
+			$$inline: true
+		});
 
 	const block = {
 		c: function create() {
-			div6 = element("div");
+			div11 = element("div");
 			if (if_block0) if_block0.c();
 			t0 = space();
 			if (if_block1) if_block1.c();
@@ -3234,61 +3138,79 @@ function create_fragment$8(ctx) {
 			t4 = space();
 			create_component(savinghistory.$$.fragment);
 			t5 = space();
-			div5 = element("div");
-			t6 = text("Общая сумма:\n    ");
+			div10 = element("div");
+			div4 = element("div");
 			div1 = element("div");
 			create_component(money0.$$.fragment);
+			t6 = text(",");
 			t7 = space();
 			div2 = element("div");
 			create_component(money1.$$.fragment);
-			t8 = space();
+			t8 = text(",");
+			t9 = space();
 			div3 = element("div");
 			create_component(money2.$$.fragment);
-			t9 = space();
-			div4 = element("div");
-			t10 = text(t10_value);
-			t11 = text(":\n      ");
-			t12 = text(t12_value);
-			t13 = text("%\n      ");
-			t14 = text(t14_value);
-			t15 = text(":\n      ");
-			t16 = text(t16_value);
-			t17 = text("%\n      ");
-			t18 = text(t18_value);
-			t19 = text(":\n      ");
-			t20 = text(t20_value);
-			t21 = text("%");
-			t22 = space();
+			t10 = text(",");
+			t11 = space();
+			div9 = element("div");
+			div8 = element("div");
+			div5 = element("div");
+			create_component(money3.$$.fragment);
+			t12 = text("(");
+			t13 = text(t13_value);
+			t14 = text("%),");
+			t15 = space();
+			div6 = element("div");
+			create_component(money4.$$.fragment);
+			t16 = text("(");
+			t17 = text(t17_value);
+			t18 = text("%),");
+			t19 = space();
+			div7 = element("div");
+			create_component(money5.$$.fragment);
+			t20 = text("(");
+			t21 = text(t21_value);
+			t22 = text("%)");
+			t23 = space();
 			create_component(piechart.$$.fragment);
 			attr_dev(form, "class", "form");
-			add_location(form, file$8, 88, 4, 1806);
-			attr_dev(div0, "class", "stats svelte-1520mhv");
-			add_location(div0, file$8, 87, 2, 1782);
-			attr_dev(div1, "class", "sum svelte-1520mhv");
-			add_location(div1, file$8, 105, 4, 2237);
-			attr_dev(div2, "class", "sum svelte-1520mhv");
-			add_location(div2, file$8, 108, 4, 2327);
-			attr_dev(div3, "class", "sum svelte-1520mhv");
-			add_location(div3, file$8, 111, 4, 2417);
-			attr_dev(div4, "class", "results sum svelte-1520mhv");
-			add_location(div4, file$8, 114, 4, 2507);
-			attr_dev(div5, "class", "results svelte-1520mhv");
-			add_location(div5, file$8, 103, 2, 2194);
-			attr_dev(div6, "class", "app svelte-1520mhv");
-			add_location(div6, file$8, 76, 0, 1455);
+			add_location(form, file$7, 83, 4, 2001);
+			attr_dev(div0, "class", "stats svelte-114oegv");
+			add_location(div0, file$7, 82, 2, 1977);
+			attr_dev(div1, "class", "sum svelte-114oegv");
+			add_location(div1, file$7, 100, 6, 2427);
+			attr_dev(div2, "class", "sum svelte-114oegv");
+			add_location(div2, file$7, 103, 6, 2524);
+			attr_dev(div3, "class", "sum svelte-114oegv");
+			add_location(div3, file$7, 106, 6, 2621);
+			attr_dev(div4, "class", "results svelte-114oegv");
+			add_location(div4, file$7, 99, 4, 2399);
+			attr_dev(div5, "class", "sum svelte-114oegv");
+			add_location(div5, file$7, 112, 8, 2791);
+			attr_dev(div6, "class", "sum svelte-114oegv");
+			add_location(div6, file$7, 117, 8, 2948);
+			attr_dev(div7, "class", "sum svelte-114oegv");
+			add_location(div7, file$7, 122, 8, 3105);
+			attr_dev(div8, "class", "results svelte-114oegv");
+			add_location(div8, file$7, 111, 6, 2761);
+			attr_dev(div9, "class", "ratioCurrency");
+			add_location(div9, file$7, 110, 4, 2727);
+			add_location(div10, file$7, 98, 2, 2389);
+			attr_dev(div11, "class", "app svelte-114oegv");
+			add_location(div11, file$7, 71, 0, 1650);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
 		},
 		m: function mount(target, anchor) {
-			insert_dev(target, div6, anchor);
-			if (if_block0) if_block0.m(div6, null);
-			append_dev(div6, t0);
-			if (if_block1) if_block1.m(div6, null);
-			append_dev(div6, t1);
-			if (if_block2) if_block2.m(div6, null);
-			append_dev(div6, t2);
-			append_dev(div6, div0);
+			insert_dev(target, div11, anchor);
+			if (if_block0) if_block0.m(div11, null);
+			append_dev(div11, t0);
+			if (if_block1) if_block1.m(div11, null);
+			append_dev(div11, t1);
+			if (if_block2) if_block2.m(div11, null);
+			append_dev(div11, t2);
+			append_dev(div11, div0);
 			append_dev(div0, form);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -3299,72 +3221,81 @@ function create_fragment$8(ctx) {
 			mount_component(button, form, null);
 			append_dev(div0, t4);
 			mount_component(savinghistory, div0, null);
-			append_dev(div6, t5);
-			append_dev(div6, div5);
-			append_dev(div5, t6);
-			append_dev(div5, div1);
+			append_dev(div11, t5);
+			append_dev(div11, div10);
+			append_dev(div10, div4);
+			append_dev(div4, div1);
 			mount_component(money0, div1, null);
-			append_dev(div5, t7);
-			append_dev(div5, div2);
+			append_dev(div1, t6);
+			append_dev(div4, t7);
+			append_dev(div4, div2);
 			mount_component(money1, div2, null);
-			append_dev(div5, t8);
-			append_dev(div5, div3);
+			append_dev(div2, t8);
+			append_dev(div4, t9);
+			append_dev(div4, div3);
 			mount_component(money2, div3, null);
-			append_dev(div5, t9);
-			append_dev(div5, div4);
-			append_dev(div4, t10);
-			append_dev(div4, t11);
-			append_dev(div4, t12);
-			append_dev(div4, t13);
-			append_dev(div4, t14);
-			append_dev(div4, t15);
-			append_dev(div4, t16);
-			append_dev(div4, t17);
-			append_dev(div4, t18);
-			append_dev(div4, t19);
-			append_dev(div4, t20);
-			append_dev(div4, t21);
-			append_dev(div6, t22);
-			mount_component(piechart, div6, null);
+			append_dev(div3, t10);
+			append_dev(div10, t11);
+			append_dev(div10, div9);
+			append_dev(div9, div8);
+			append_dev(div8, div5);
+			mount_component(money3, div5, null);
+			append_dev(div5, t12);
+			append_dev(div5, t13);
+			append_dev(div5, t14);
+			append_dev(div8, t15);
+			append_dev(div8, div6);
+			mount_component(money4, div6, null);
+			append_dev(div6, t16);
+			append_dev(div6, t17);
+			append_dev(div6, t18);
+			append_dev(div8, t19);
+			append_dev(div8, div7);
+			mount_component(money5, div7, null);
+			append_dev(div7, t20);
+			append_dev(div7, t21);
+			append_dev(div7, t22);
+			append_dev(div9, t23);
+			mount_component(piechart, div9, null);
 			current = true;
 		},
 		p: function update(ctx, [dirty]) {
-			if (/*$status*/ ctx[2] === STATUS.loading) {
+			if (/*$status*/ ctx[4] === STATUS.loading) {
 				if (if_block0) ; else {
 					if_block0 = create_if_block_2(ctx);
 					if_block0.c();
-					if_block0.m(div6, t0);
+					if_block0.m(div11, t0);
 				}
 			} else if (if_block0) {
 				if_block0.d(1);
 				if_block0 = null;
 			}
 
-			if (/*$status*/ ctx[2] === STATUS.failed) {
+			if (/*$status*/ ctx[4] === STATUS.failed) {
 				if (if_block1) {
 					if_block1.p(ctx, dirty);
 				} else {
 					if_block1 = create_if_block_1(ctx);
 					if_block1.c();
-					if_block1.m(div6, t1);
+					if_block1.m(div11, t1);
 				}
 			} else if (if_block1) {
 				if_block1.d(1);
 				if_block1 = null;
 			}
 
-			if (/*$status*/ ctx[2] === STATUS.loaded) {
+			if (/*$status*/ ctx[4] === STATUS.loaded) {
 				if (if_block2) {
 					if_block2.p(ctx, dirty);
 
-					if (dirty & /*$status*/ 4) {
+					if (dirty & /*$status*/ 16) {
 						transition_in(if_block2, 1);
 					}
 				} else {
 					if_block2 = create_if_block$2(ctx);
 					if_block2.c();
 					transition_in(if_block2, 1);
-					if_block2.m(div6, t2);
+					if_block2.m(div11, t2);
 				}
 			} else if (if_block2) {
 				group_outros();
@@ -3376,8 +3307,8 @@ function create_fragment$8(ctx) {
 				check_outros();
 			}
 
-			if (dirty & /*financeKeys, $finance, handleChange, handleDelete*/ 387) {
-				each_value = /*financeKeys*/ ctx[0];
+			if (dirty & /*financeKeys, $finance, handleChange, handleDelete*/ 1542) {
+				each_value = /*financeKeys*/ ctx[1];
 				validate_each_argument(each_value);
 				let i;
 
@@ -3406,23 +3337,35 @@ function create_fragment$8(ctx) {
 
 			const button_changes = {};
 
-			if (dirty & /*$$scope*/ 16384) {
+			if (dirty & /*$$scope*/ 32768) {
 				button_changes.$$scope = { dirty, ctx };
 			}
 
 			button.$set(button_changes);
 			const money0_changes = {};
-			if (dirty & /*$totalSaving*/ 32) money0_changes.amount = /*$totalSaving*/ ctx[5].RUB;
+			if (dirty & /*$totalSaving*/ 128) money0_changes.amount = /*$totalSaving*/ ctx[7].RUB;
 			money0.$set(money0_changes);
 			const money1_changes = {};
-			if (dirty & /*$totalSaving*/ 32) money1_changes.amount = /*$totalSaving*/ ctx[5].USD;
+			if (dirty & /*$totalSaving*/ 128) money1_changes.amount = /*$totalSaving*/ ctx[7].USD;
 			money1.$set(money1_changes);
 			const money2_changes = {};
-			if (dirty & /*$totalSaving*/ 32) money2_changes.amount = /*$totalSaving*/ ctx[5].EUR;
+			if (dirty & /*$totalSaving*/ 128) money2_changes.amount = /*$totalSaving*/ ctx[7].EUR;
 			money2.$set(money2_changes);
-			if ((!current || dirty & /*$totalRation*/ 64) && t12_value !== (t12_value = /*$totalRation*/ ctx[6].RUB + "")) set_data_dev(t12, t12_value);
-			if ((!current || dirty & /*$totalRation*/ 64) && t16_value !== (t16_value = /*$totalRation*/ ctx[6].EUR + "")) set_data_dev(t16, t16_value);
-			if ((!current || dirty & /*$totalRation*/ 64) && t20_value !== (t20_value = /*$totalRation*/ ctx[6].USD + "")) set_data_dev(t20, t20_value);
+			const money3_changes = {};
+			if (dirty & /*$separateCurrencyTotal*/ 256) money3_changes.amount = /*$separateCurrencyTotal*/ ctx[8].RUB;
+			money3.$set(money3_changes);
+			if ((!current || dirty & /*$totalRatio*/ 8) && t13_value !== (t13_value = /*$totalRatio*/ ctx[3].RUB + "")) set_data_dev(t13, t13_value);
+			const money4_changes = {};
+			if (dirty & /*$separateCurrencyTotal*/ 256) money4_changes.amount = /*$separateCurrencyTotal*/ ctx[8].USD;
+			money4.$set(money4_changes);
+			if ((!current || dirty & /*$totalRatio*/ 8) && t17_value !== (t17_value = /*$totalRatio*/ ctx[3].USD + "")) set_data_dev(t17, t17_value);
+			const money5_changes = {};
+			if (dirty & /*$separateCurrencyTotal*/ 256) money5_changes.amount = /*$separateCurrencyTotal*/ ctx[8].EUR;
+			money5.$set(money5_changes);
+			if ((!current || dirty & /*$totalRatio*/ 8) && t21_value !== (t21_value = /*$totalRatio*/ ctx[3].EUR + "")) set_data_dev(t21, t21_value);
+			const piechart_changes = {};
+			if (dirty & /*slices*/ 1) piechart_changes.slices = /*slices*/ ctx[0];
+			piechart.$set(piechart_changes);
 		},
 		i: function intro(local) {
 			if (current) return;
@@ -3437,6 +3380,9 @@ function create_fragment$8(ctx) {
 			transition_in(money0.$$.fragment, local);
 			transition_in(money1.$$.fragment, local);
 			transition_in(money2.$$.fragment, local);
+			transition_in(money3.$$.fragment, local);
+			transition_in(money4.$$.fragment, local);
+			transition_in(money5.$$.fragment, local);
 			transition_in(piechart.$$.fragment, local);
 			current = true;
 		},
@@ -3453,11 +3399,14 @@ function create_fragment$8(ctx) {
 			transition_out(money0.$$.fragment, local);
 			transition_out(money1.$$.fragment, local);
 			transition_out(money2.$$.fragment, local);
+			transition_out(money3.$$.fragment, local);
+			transition_out(money4.$$.fragment, local);
+			transition_out(money5.$$.fragment, local);
 			transition_out(piechart.$$.fragment, local);
 			current = false;
 		},
 		d: function destroy(detaching) {
-			if (detaching) detach_dev(div6);
+			if (detaching) detach_dev(div11);
 			if (if_block0) if_block0.d();
 			if (if_block1) if_block1.d();
 			if (if_block2) if_block2.d();
@@ -3467,13 +3416,16 @@ function create_fragment$8(ctx) {
 			destroy_component(money0);
 			destroy_component(money1);
 			destroy_component(money2);
+			destroy_component(money3);
+			destroy_component(money4);
+			destroy_component(money5);
 			destroy_component(piechart);
 		}
 	};
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$8.name,
+		id: create_fragment$7.name,
 		type: "component",
 		source: "",
 		ctx
@@ -3482,27 +3434,32 @@ function create_fragment$8(ctx) {
 	return block;
 }
 
-function instance$8($$self, $$props, $$invalidate) {
+function instance$7($$self, $$props, $$invalidate) {
 	let $finance;
+	let $totalRatio;
 	let $status;
 	let $error;
 	let $rates;
 	let $totalSaving;
-	let $totalRation;
+	let $separateCurrencyTotal;
 	validate_store(finance, "finance");
-	component_subscribe($$self, finance, $$value => $$invalidate(1, $finance = $$value));
+	component_subscribe($$self, finance, $$value => $$invalidate(2, $finance = $$value));
+	validate_store(totalRatio, "totalRatio");
+	component_subscribe($$self, totalRatio, $$value => $$invalidate(3, $totalRatio = $$value));
 	validate_store(status, "status");
-	component_subscribe($$self, status, $$value => $$invalidate(2, $status = $$value));
+	component_subscribe($$self, status, $$value => $$invalidate(4, $status = $$value));
 	validate_store(error, "error");
-	component_subscribe($$self, error, $$value => $$invalidate(3, $error = $$value));
+	component_subscribe($$self, error, $$value => $$invalidate(5, $error = $$value));
 	validate_store(rates, "rates");
-	component_subscribe($$self, rates, $$value => $$invalidate(4, $rates = $$value));
+	component_subscribe($$self, rates, $$value => $$invalidate(6, $rates = $$value));
 	validate_store(totalSaving, "totalSaving");
-	component_subscribe($$self, totalSaving, $$value => $$invalidate(5, $totalSaving = $$value));
-	validate_store(totalRation, "totalRation");
-	component_subscribe($$self, totalRation, $$value => $$invalidate(6, $totalRation = $$value));
+	component_subscribe($$self, totalSaving, $$value => $$invalidate(7, $totalSaving = $$value));
+	validate_store(separateCurrencyTotal, "separateCurrencyTotal");
+	component_subscribe($$self, separateCurrencyTotal, $$value => $$invalidate(8, $separateCurrencyTotal = $$value));
 	let { $$slots: slots = {}, $$scope } = $$props;
 	validate_slots("App", slots, []);
+	
+	let slices = [];
 
 	onMount(() => {
 		initializeSavings();
@@ -3510,7 +3467,6 @@ function instance$8($$self, $$props, $$invalidate) {
 	});
 
 	function handleChange({ detail }) {
-		console.log(detail);
 		updateAccount(detail);
 	}
 
@@ -3523,17 +3479,14 @@ function instance$8($$self, $$props, $$invalidate) {
 		createAccount();
 	}
 
-	const product = { banans: data.columns[1] };
 	const writable_props = [];
 
 	Object_1$1.keys($$props).forEach(key => {
-		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<App> was created with unknown prop '${key}'`);
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<App> was created with unknown prop '${key}'`);
 	});
 
 	$$self.$capture_state = () => ({
 		onMount,
-		round,
-		getCurrencySymbol,
 		initializeSavings,
 		getAllCurrency,
 		updateAccount,
@@ -3545,30 +3498,30 @@ function instance$8($$self, $$props, $$invalidate) {
 		finance,
 		STATUS,
 		totalSaving,
-		savingsHistory,
-		totalRation,
+		totalRatio,
+		separateCurrencyTotal,
 		PieChart,
 		Input,
 		Button,
 		SavingHistory,
 		Money,
-		Diagram,
-		data,
+		slices,
 		handleChange,
 		handleDelete,
 		add,
-		product,
 		financeKeys,
 		$finance,
+		$totalRatio,
 		$status,
 		$error,
 		$rates,
 		$totalSaving,
-		$totalRation
+		$separateCurrencyTotal
 	});
 
 	$$self.$inject_state = $$props => {
-		if ("financeKeys" in $$props) $$invalidate(0, financeKeys = $$props.financeKeys);
+		if ("slices" in $$props) $$invalidate(0, slices = $$props.slices);
+		if ("financeKeys" in $$props) $$invalidate(1, financeKeys = $$props.financeKeys);
 	};
 
 	let financeKeys;
@@ -3578,19 +3531,43 @@ function instance$8($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*$finance*/ 2) {
-			 $$invalidate(0, financeKeys = $finance ? Object.keys($finance) : []);
+		if ($$self.$$.dirty & /*$finance*/ 4) {
+			 $$invalidate(1, financeKeys = $finance ? Object.keys($finance) : []);
+		}
+
+		if ($$self.$$.dirty & /*$totalRatio*/ 8) {
+			 {
+				$$invalidate(0, slices = [
+					{
+						color: "#eee",
+						value: $totalRatio.RUB || 1,
+						text: "RUB"
+					},
+					{
+						color: "#0a7734",
+						value: $totalRatio.EUR || 1,
+						text: "EUR"
+					},
+					{
+						color: "#d10d17",
+						value: $totalRatio.USD || 1,
+						text: "USD"
+					}
+				]);
+			}
 		}
 	};
 
 	return [
+		slices,
 		financeKeys,
 		$finance,
+		$totalRatio,
 		$status,
 		$error,
 		$rates,
 		$totalSaving,
-		$totalRation,
+		$separateCurrencyTotal,
 		handleChange,
 		handleDelete,
 		add
@@ -3600,13 +3577,13 @@ function instance$8($$self, $$props, $$invalidate) {
 class App extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$8, create_fragment$8, safe_not_equal, {});
+		init(this, options, instance$7, create_fragment$7, safe_not_equal, {});
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "App",
 			options,
-			id: create_fragment$8.name
+			id: create_fragment$7.name
 		});
 	}
 }

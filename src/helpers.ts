@@ -1,10 +1,10 @@
 import type { IRates } from "./store/types";
 
-export function round(value: number, withK: boolean): number | string {
+export function round(value: number, withK?: boolean): number | string {
   if (withK) {
-    return `${Math.round(value / 1000 / 23)}k`;
+    return `${Math.round(value / 1000)}k`;
   }
-  return Math.round(value * 100 / 23) / 100;
+  return Math.round(value * 100) / 100;
 }
 
 export function parseDate(): string {
