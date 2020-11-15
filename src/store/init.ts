@@ -21,6 +21,13 @@ import { getAllCurrencyApi } from "./api";
 import type { IRates, ISavings, ITotalStorage } from "./types";
 import { parseDate } from "../helpers";
 
+const options = {
+  weekday: "short",
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+};
+
 // getAllCurrency
 
 getAllCurrency.use(getAllCurrencyApi);
@@ -46,8 +53,10 @@ historyRates.on(getAllCurrency.doneData, (_, { ratesUSD, ratesEUR }) => {
     RUB: 1,
   };
 
-
-  if(oldRatesItems.length > 0 && ratesUSD.RUB === oldRatesItems[oldRatesItems.length-1].USD) {
+  if (
+    oldRatesItems.length > 0 &&
+    ratesUSD.RUB === oldRatesItems[oldRatesItems.length - 1].USD
+  ) {
     return oldRatesItems;
   }
 
@@ -60,7 +69,12 @@ historyRates.on(getAllCurrency.doneData, (_, { ratesUSD, ratesEUR }) => {
 
 error.on(getAllCurrency.failData, (_, error) => error);
 
-date.on(getAllCurrency.doneData, (_, { date }) => date);
+date.on(getAllCurrency.doneData, (_, { date }) => {
+  const [year, month, day] = date.split("-");
+  const dateObject = new Date(Number(year), Number(month) - 1, Number(day));
+
+  return new Intl.DateTimeFormat("ru-RU", options).format(dateObject);
+});
 
 // updateAccount
 

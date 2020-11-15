@@ -38,6 +38,13 @@
     await tick();
     inputRef!.focus();
   }
+
+  function handleBlur() {
+    if(!accountName) {
+      return;
+    }
+    isInputNameVisible = !isInputNameVisible;
+  }
 </script>
 
 <style>
@@ -95,9 +102,9 @@
         class="input accountName"
         bind:this={inputRef}
         type="text"
-        placeholder="название"
+        placeholder="Название"
         bind:value={accountName}
-        on:blur={() => (isInputNameVisible = !isInputNameVisible)}
+        on:blur={handleBlur}
         name="accountName" />
     </div>
   {:else}
@@ -109,7 +116,7 @@
     <input
       class="input"
       type="number"
-      placeholder="cумма"
+      placeholder="Сумма"
       name={`${id}Amount`}
       bind:value={amountValue} />
     <select class="select" name={`${id}Currency`} bind:value={currencyValue}>

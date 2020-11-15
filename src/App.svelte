@@ -7,6 +7,7 @@
     createAccount,
     deleteAccount,
     rates,
+    date,
     status,
     error,
     finance,
@@ -102,6 +103,7 @@
       <Money amount={$rates.USD} currency="USD" />
       Евро:
       <Money amount={$rates.EUR} currency="EUR" />
+      ({$date})
     </div>
   {/if}
   <div class="stats">

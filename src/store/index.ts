@@ -92,7 +92,14 @@ export const totalRatio = combine(
 
     const ratioTotal = separateCurrencyTotalKeys.reduce(
       (acc, key: keyof IRates) => {
-        acc[key] += Math.round(separateCurrencyTotal[key] / totalSaving[key] * 100);
+        if (!totalSaving[key] || !separateCurrencyTotal[key]) {
+          return acc;
+        }
+
+        acc[key] += Math.round(
+          (separateCurrencyTotal[key] / totalSaving[key]) * 100
+        );
+        
         return acc;
       },
       {
